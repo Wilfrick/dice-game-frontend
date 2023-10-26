@@ -1,6 +1,6 @@
 import './styles.css'
 import GameArea from './Compenents/GameArea'
-import DiceFace from './Compenents/DiceFace'
+// import DiceFace from './Compenents/DiceFace'
 import Hand from './Compenents/Hand'
 
 function App() {
