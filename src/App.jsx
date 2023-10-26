@@ -9,11 +9,31 @@ function SayHello() {
   console.log("Hi from Jim")
 }
 
+function sendMove(playerMove) {
+  let GameID = 1234
+  let PlayerID = 123
+  console.log(`Sending ${playerMove}`)
+  let str_move = JSON.stringify({GameID, PlayerID, MoveSTR: playerMove})
+  ws.send(str_move)
+  
+}
+
 function ClickDudo() {
   console.log("Clicked Dudo")
+  let str_move = JSON.stringify({GameID: 123, PlayerID:234, MoveSTR: "Dudo"})
+  ws.send(str_move)
+  
 
-  ws.send("Dudo")
-   
+}
+
+
+
+
+
+function ClickCalza() {
+  console.log("Clicked Calza")
+  let str_move = JSON.stringify({GameID: 123, PlayerID:234, MoveSTR: "Calza"})
+  ws.send(str_move)
 }
 
 function App() {
@@ -37,8 +57,8 @@ function App() {
             <Hand values={["one", "two", "three", "four", "five", "six"]}></Hand>
           </div>
           <button className="Make_Bet" type="button">Make Bet</button>
-          <button className="Dudo" type="button" onClick={ClickDudo}>Dudo</button>
-          <button className="Calza" type="button">Calza</button>
+          <button className="Dudo" type="button" onClick={() => sendMove("Dudo")}>Dudo</button>
+          <button className="Calza" type="button" onClick={() => sendMove("Calza")}>Calza</button>
         </div>
         <div className="other_actions">
           <div className="bet">
