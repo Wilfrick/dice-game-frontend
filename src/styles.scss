@@ -1,0 +1,253 @@
+// .cardBody {
+//     border: 1px solid black;
+//     border-radius: 2em;
+//     height: 20em;
+//     width: 15em;
+// }
+
+$edge_length: 2em;
+$normal_dice_face_values: "two", "three", "four", "five", "six";
+$all_dice_face_values: "one", "two", "three", "four", "five", "six";
+
+.hands {
+    counter-reset: matching_dice;
+    border: 1px solid black;
+    width: fit-content;
+
+
+    &.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
+        border: 4px solid white;
+        counter-increment: matching_dice;
+    }
+
+    @each $dice_face_value in $normal_dice_face_values {
+        &.selected.#{$dice_face_value} :not(.unknown) {
+
+            .diceFace.#{$dice_face_value}:not(.unknown),
+            .diceFace.one:not(.unknown) {
+                border: 4px solid white;
+                counter-increment: matching_dice;
+            }
+        }
+    }
+
+}
+
+.hand {
+    border: 1px solid black;
+
+    &:hover {
+        border-color: yellow;
+    }
+
+    margin: 3px;
+    border-radius: calc($edge_length/5);
+    display: flex;
+    width: fit-content;
+    background-color: lightblue;
+}
+
+
+.diceFace {
+    border: 4px solid grey;
+
+    &:hover {
+        border-color: yellow;
+    }
+
+    margin: 3px;
+    height: $edge_length;
+    width: $edge_length;
+    border-radius: calc($edge_length / 5);
+    padding: calc($edge_length / 5);
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    display: grid;
+    background-color: lightgrey;
+
+    >.pip {
+        border: 1px solid black;
+        border-radius: 40%;
+        background-color: black;
+
+        &.top_left {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        &.top_right {
+            grid-column: 5;
+            grid-row: 1;
+        }
+
+        &.middle_left {
+            grid-column: 1;
+            grid-row: 3;
+        }
+
+        &.middle_centre {
+            grid-column: 3;
+            grid-row: 3;
+        }
+
+        &.middle_right {
+            grid-column: 5;
+            grid-row: 3;
+        }
+
+        &.bottom_left {
+            grid-column: 1;
+            grid-row: 5;
+        }
+
+        &.bottom_right {
+            grid-column: 5;
+            grid-row: 5;
+        }
+    }
+
+
+
+    &.one {
+
+        .top_left,
+        .top_right,
+        .middle_left,
+        .middle_right,
+        .bottom_left,
+        .bottom_right {
+            display: none;
+        }
+    }
+
+    &.two {
+
+        .top_right,
+        .middle_left,
+        .middle_centre,
+        .middle_right,
+        .bottom_left {
+            display: none;
+        }
+    }
+
+    &.three {
+
+        .top_right,
+        .middle_left,
+        .middle_right,
+        .bottom_left {
+            display: none;
+        }
+    }
+
+    &.four {
+
+        .middle_left,
+        .middle_centre,
+        .middle_right {
+            display: none;
+        }
+    }
+
+    &.five {
+
+        .middle_left,
+        .middle_right {
+            display: none;
+        }
+    }
+
+    &.six {
+        .middle_centre {
+            display: none;
+        }
+    }
+
+    .unknown &,
+    &.unknown {
+
+        .top_left,
+        .top_right,
+        .middle_left,
+        .middle_centre,
+        .middle_right,
+        .bottom_left,
+        .bottom_right {
+            display: none;
+        }
+
+
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .middle_centre {
+            &::before {
+                content: "?";
+            }
+
+            display: contents;
+            font-size: 2.5em;
+        }
+    }
+}
+
+#count::before {
+    content: "There are " counter(matching_dice);
+}
+
+.game_area {
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    // width: 100vw;
+    width: fit-content;
+
+}
+
+.my_actions {
+    border: 1px solid black;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+
+    button {
+        width: 100%;
+        height: 2em;
+        font-size: 1.5em;
+        border-radius: 0.2em;
+        background-color: darkgreen;
+        color: lightblue;
+    }
+}
+
+.bet {
+    display: flex;
+    // width: fit-content;
+    align-items: center;
+    // flex-direction: row;
+    // border: 1px solid black;
+    justify-content: center;
+
+    .bet_multiplier {
+        // border: 1px solid black;
+        // width: fit-content;
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+        // justify-content: right;
+
+        input,
+        p {
+            border: 1px solid lightgrey;
+            // height: 100%;
+            font-size: 1em;
+            width: 2em;
+        }
+
+    }
+
+}
