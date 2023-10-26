@@ -2,10 +2,15 @@ import './styles.css'
 import GameArea from './Compenents/GameArea'
 // import DiceFace from './Compenents/DiceFace'
 import Hand from './Compenents/Hand'
+import { useState } from 'react'
 
 const ws = new WebSocket("ws://localhost:12345/echo");
 
-function SayHello() { 
+
+
+
+
+function MakeBet() { 
   console.log("Hi from Jim")
 }
 
@@ -18,27 +23,31 @@ function sendMove(playerMove) {
   
 }
 
-function ClickDudo() {
-  console.log("Clicked Dudo")
-  let str_move = JSON.stringify({GameID: 123, PlayerID:234, MoveSTR: "Dudo"})
-  ws.send(str_move)
-  
-
-}
-
-
-
-
-
-function ClickCalza() {
-  console.log("Clicked Calza")
-  let str_move = JSON.stringify({GameID: 123, PlayerID:234, MoveSTR: "Calza"})
-  ws.send(str_move)
-}
 
 function App() {
 
+  const betRankBox = document.querySelector(".bet_multiplier input")
+  const [selectedIndex, setSelectedIndex] = useState(undefined)
+  const [otherPlayerActions, setOtherPlayerActions] = useState([]) // will be used by betAttempted to check that the bet we want to make is acceptable
+
+  function betAttempted() {
+    // const betButton = event.target
+    
+
+    console.log(`Bet Attempted: ${betRankBox.value} ${selectedIndex}`)
+    if (Number(betRankBox.value) < 1) {
+      console.log("Rank too low")
+    }
+    // other validation here
+
+    
+    //Passed all validation
+    let playerMove = betRankBox.value + " " + selectedIndex
+    sendMove(playerMove)
+  }
   
+
+  console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
     <GameArea>
       <div className="hands six selected">
@@ -54,9 +63,9 @@ function App() {
         <div className="my_actions">
           <div className="bet">
             <div className="bet_multiplier"><input type="number" name="rank" />x</div>
-            <Hand values={["one", "two", "three", "four", "five", "six"]}></Hand>
+            <Hand values={["one", "two", "three", "four", "five", "six"]} selectable={true} setSelectedIndex={setSelectedIndex}></Hand>
           </div>
-          <button className="Make_Bet" type="button">Make Bet</button>
+          <button className="Make_Bet" type="button" onClick ={() => betAttempted()}>Make Bet</button>
           <button className="Dudo" type="button" onClick={() => sendMove("Dudo")}>Dudo</button>
           <button className="Calza" type="button" onClick={() => sendMove("Calza")}>Calza</button>
         </div>
