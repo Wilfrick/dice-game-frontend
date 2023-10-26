@@ -3,8 +3,22 @@ import GameArea from './Compenents/GameArea'
 // import DiceFace from './Compenents/DiceFace'
 import Hand from './Compenents/Hand'
 
+const ws = new WebSocket("ws://localhost:12345/echo");
+
+function SayHello() { 
+  console.log("Hi from Jim")
+}
+
+function ClickDudo() {
+  console.log("Clicked Dudo")
+
+  ws.send("Dudo")
+   
+}
+
 function App() {
 
+  
   return (
     <GameArea>
       <div className="hands six selected">
@@ -23,7 +37,7 @@ function App() {
             <Hand values={["one", "two", "three", "four", "five", "six"]}></Hand>
           </div>
           <button className="Make_Bet" type="button">Make Bet</button>
-          <button className="Dudo" type="button">Dudo</button>
+          <button className="Dudo" type="button" onClick={ClickDudo}>Dudo</button>
           <button className="Calza" type="button">Calza</button>
         </div>
         <div className="other_actions">
