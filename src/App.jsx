@@ -4,8 +4,9 @@ import GameArea from './Compenents/GameArea'
 import Hand from './Compenents/Hand'
 import { useState } from 'react'
 
-const ws = new WebSocket("ws://localhost:12345/ws");
+import numberToString from './Utils/numberParser'
 
+const ws = new WebSocket("ws://localhost:12345/ws");
 
 
 
@@ -28,7 +29,17 @@ function App() {
 
   const betRankBox = document.querySelector(".bet_multiplier input")
   const [selectedIndex, setSelectedIndex] = useState(undefined)
-  const [otherPlayerActions, setOtherPlayerActions] = useState([]) // will be used by betAttempted to check that the bet we want to make is acceptable
+  const [currentPlayerHand, setCurrentPlayerHand] = useState([])
+
+
+
+  ws.onmessage = (event) => {
+    console.log(event.data);
+    console.log(JSON.parse(event.data));
+    let handData = JSON.parse(event.data).map(numberToString)
+    setCurrentPlayerHand(handData)
+    // log("Received " + event.data)
+  }
 
   function betAttempted() {
     // const betButton = event.target
@@ -52,12 +63,13 @@ function App() {
     <GameArea>
       <div className="hands six selected">
         <Hand values={["one", "two", "three", "three", "four"]}></Hand>
-        <Hand values={["three", "three", "four", "five", "six"]}></Hand>
+        <Hand values={currentPlayerHand}></Hand>
+        {/* <Hand values={["three", "three", "four", "five", "six"]}></Hand>
         <Hand values={["two", "two", "three", "three", "six"]}></Hand>
         <Hand values={["one", "one", "two", "five", "six"]}></Hand>
         <Hand values={["one", "two", "two", "four", "six"]}></Hand>
         <Hand values={["three", "four", "four", "four", "five"]}></Hand>
-        <Hand values={["one", "one", "two", "two", "four"]}></Hand>
+        <Hand values={["one", "one", "two", "two", "four"]}></Hand> */}
       </div>
       <div className="action_display">
         <div className="my_actions">
