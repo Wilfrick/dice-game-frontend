@@ -19,7 +19,8 @@ function sendMove(playerMove) {
   let GameID = 1234
   let PlayerID = 123
   console.log(`Sending ${playerMove}`)
-  let str_move = JSON.stringify({ GameID, PlayerID, MoveSTR: playerMove })
+  let Contents = { GameID, PlayerID, MoveSTR: playerMove }
+  let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
   ws.send(str_move)
 
 }
@@ -36,8 +37,11 @@ function App() {
   ws.onmessage = (event) => {
     console.log(event.data);
     console.log(JSON.parse(event.data));
-    let handData = JSON.parse(event.data).map(numberToString)
-    setCurrentPlayerHand(handData)
+    let parsedMessage = JSON.parse(event.data)
+    if (parsedMessage['TypeDescriptor'] == 'PlayerHand') {
+      let handData = parsedMessage.Contents.map(numberToString)
+      setCurrentPlayerHand(handData)
+    }
     // log("Received " + event.data)
   }
 
