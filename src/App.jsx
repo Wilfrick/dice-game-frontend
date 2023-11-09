@@ -1,7 +1,7 @@
 import './styles.css'
-import GameArea from './Compenents/GameArea'
+import GameArea from './Components/GameArea'
 // import DiceFace from './Compenents/DiceFace'
-import Hand from './Compenents/Hand'
+import Hand from './Components/Hand'
 import { useState } from 'react'
 
 import numberToString from './Utils/numberParser'
@@ -86,11 +86,21 @@ function App() {
           <button className="Calza" type="button" onClick={() => sendMove("Calza")}>Calza</button>
         </div>
         <div className="other_actions">
+          
           <div className="bet">
+          <p className="player_identifier">Player: 2</p>
             <div className="bet_multiplier">
               <p>3</p>x
             </div>
             <Hand values={["one"]}></Hand>
+
+          </div>
+          <div className="bet">
+            <p className="player_identifier">Player: 3</p>
+            <div className="bet_multiplier">
+              <p>4</p>x
+            </div>
+            <Hand values={["two"]}></Hand>
 
           </div>
           <div className="action dudo">Dudo!</div>
