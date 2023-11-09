@@ -9,9 +9,15 @@ $edge_length: 2em;
 $normal_dice_face_values: "two", "three", "four", "five", "six";
 $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 
+body {
+    margin: 0;
+    padding: 8px;
+}
+
 .hands {
     counter-reset: matching_dice;
-    border: 1px solid black;
+    border: 1px solid red;
+    flex: 50%;
     width: fit-content;
 
 
@@ -199,12 +205,13 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 }
 
 .game_area {
+    margin: 0;
     border: 1px solid black;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    // width: 100vw;
-    width: fit-content;
+    width: 100%;
+    // width: fit-content;
 
 }
 
@@ -225,12 +232,24 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 }
 
 .bet {
+    // border: 1px solid black;
+    border-radius: 0.5em;
+    margin: 0.5em 0;
+    background-color: rgb(219, 255, 236);
     display: flex;
     // width: fit-content;
     align-items: center;
     // flex-direction: row;
     // border: 1px solid black;
     justify-content: center;
+
+    .player_identifier {
+        font-size: 1.5em;
+
+        .player_name {
+            font-weight: 600;
+        }
+    }
 
     .bet_multiplier {
         // border: 1px solid black;
@@ -242,12 +261,18 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 
         input,
         p {
-            border: 1px solid lightgrey;
+            // border: 1px solid lightgrey;
             // height: 100%;
+            text-align: end;
             font-size: 1em;
             width: 2em;
         }
 
     }
+
+}
+
+.action_display {
+    flex: 50%;
 
 }

@@ -5,7 +5,7 @@ import Hand from './Components/Hand'
 import Bet from './Components/Bet'
 import { useState } from 'react'
 
-import {numberToString, stringToNumber} from './Utils/numberParser'
+import { numberToString, stringToNumber } from './Utils/numberParser'
 
 const ws = new WebSocket("ws://localhost:12345/ws");
 
@@ -17,11 +17,11 @@ function MakeBet() {
 }
 
 function sendMove(playerMove) {
-  let GameID = 1234
-  let PlayerID = 123
+  // let GameID = 1234
+  // let PlayerID = 123
   console.log(`Sending ${JSON.stringify(playerMove)}`)
   // let Contents = { GameID, PlayerID, MoveSTR: playerMove }
-  let Contents = {MoveType: "Bet", Value: playerMove}
+  let Contents = { MoveType: "Bet", Value: playerMove }
   let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
   ws.send(str_move)
 
@@ -40,26 +40,25 @@ function App() {
     console.log(event.data);
     console.log(JSON.parse(event.data));
     let parsedMessage = JSON.parse(event.data)
-    
+
     switch (parsedMessage?.TypeDescriptor) {
-      case "PlayerHand": 
-        let handData = parsedMessage.Contents.map(numberToString)
-        setCurrentPlayerHand(handData)
+      case "PlayerHand":
+        setCurrentPlayerHand(parsedMessage.Contents.map(numberToString))
         break
-      
-    
-      case "RoundUpdate": 
+
+
+      case "RoundUpdate":
         console.log(`movesMade: ${movesMade}`);
         console.log(parsedMessage.Contents);
         setMovesMade([parsedMessage.Contents, ...movesMade])
         // setBetsMade([parsedMessage.Contents.Value])
         break
-      
-    
+
+
     }
-    
+
     // if (parsedMessage['TypeDescriptor'] == 'PlayerHand') {
-      
+
     // }
     // log("Received " + event.data)
   }
@@ -114,8 +113,8 @@ function App() {
                 FaceVal } },
             PlayerIndex }, i) =>
             <Bet player_identifier={PlayerIndex.toString()} bet_multiplier={NumDice} value={numberToString(FaceVal)} key={i} />)}
-          <Bet player_identifier="Jim" bet_multiplier={3} value="two"/>
-          <Bet player_identifier="Alex" bet_multiplier={3} value="three"/>
+          <Bet player_identifier="Jim" bet_multiplier={3} value="two" />
+          <Bet player_identifier="Alex" bet_multiplier={3} value="three" />
 
 
 
