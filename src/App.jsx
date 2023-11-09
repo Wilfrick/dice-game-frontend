@@ -2,9 +2,10 @@ import './styles.css'
 import GameArea from './Components/GameArea'
 // import DiceFace from './Compenents/DiceFace'
 import Hand from './Components/Hand'
+import Bet from './Components/Bet'
 import { useState } from 'react'
 
-import numberToString from './Utils/numberParser'
+import {numberToString, stringToNumber} from './Utils/numberParser'
 
 const ws = new WebSocket("ws://localhost:12345/ws");
 
@@ -18,8 +19,9 @@ function MakeBet() {
 function sendMove(playerMove) {
   let GameID = 1234
   let PlayerID = 123
-  console.log(`Sending ${playerMove}`)
-  let Contents = { GameID, PlayerID, MoveSTR: playerMove }
+  console.log(`Sending ${JSON.stringify(playerMove)}`)
+  // let Contents = { GameID, PlayerID, MoveSTR: playerMove }
+  let Contents = {MoveType: "Bet", Value: playerMove}
   let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
   ws.send(str_move)
 
@@ -31,17 +33,34 @@ function App() {
   const betRankBox = document.querySelector(".bet_multiplier input")
   const [selectedIndex, setSelectedIndex] = useState(undefined)
   const [currentPlayerHand, setCurrentPlayerHand] = useState([])
-
+  const [movesMade, setMovesMade] = useState([])
 
 
   ws.onmessage = (event) => {
     console.log(event.data);
     console.log(JSON.parse(event.data));
     let parsedMessage = JSON.parse(event.data)
-    if (parsedMessage['TypeDescriptor'] == 'PlayerHand') {
-      let handData = parsedMessage.Contents.map(numberToString)
-      setCurrentPlayerHand(handData)
+    
+    switch (parsedMessage?.TypeDescriptor) {
+      case "PlayerHand": 
+        let handData = parsedMessage.Contents.map(numberToString)
+        setCurrentPlayerHand(handData)
+        break
+      
+    
+      case "RoundUpdate": 
+        console.log(`movesMade: ${movesMade}`);
+        console.log(parsedMessage.Contents);
+        setMovesMade([parsedMessage.Contents, ...movesMade])
+        // setBetsMade([parsedMessage.Contents.Value])
+        break
+      
+    
     }
+    
+    // if (parsedMessage['TypeDescriptor'] == 'PlayerHand') {
+      
+    // }
     // log("Received " + event.data)
   }
 
@@ -57,7 +76,8 @@ function App() {
 
 
     //Passed all validation
-    let playerMove = betRankBox.value + " " + selectedIndex
+    // let playerMove = betRankBox.value + " " + selectedIndex
+    let playerMove = { NumDice: Number(betRankBox.value), FaceVal: stringToNumber(selectedIndex) }
     sendMove(playerMove)
   }
 
@@ -86,26 +106,26 @@ function App() {
           <button className="Calza" type="button" onClick={() => sendMove("Calza")}>Calza</button>
         </div>
         <div className="other_actions">
-          
-          <div className="bet">
-          <p className="player_identifier">Player: 2</p>
-            <div className="bet_multiplier">
-              <p>3</p>x
-            </div>
-            <Hand values={["one"]}></Hand>
+          {movesMade.map(({
+            MoveMade: {
+              MoveType,
+              Value: {
+                NumDice,
+                FaceVal } },
+            PlayerIndex }, i) =>
+            <Bet player_identifier={PlayerIndex.toString()} bet_multiplier={NumDice} value={numberToString(FaceVal)} key={i} />)}
+          <Bet player_identifier="Jim" bet_multiplier={3} value="two"/>
+          <Bet player_identifier="Alex" bet_multiplier={3} value="three"/>
 
-          </div>
-          <div className="bet">
-            <p className="player_identifier">Player: 3</p>
-            <div className="bet_multiplier">
-              <p>4</p>x
-            </div>
-            <Hand values={["two"]}></Hand>
 
-          </div>
-          <div className="action dudo">Dudo!</div>
 
-          <div className="action calza">Calza!</div>
+          <div className="action dudo">
+            <p className="player_identifier">Player: 5</p>
+            Dudo!</div>
+
+          <div className="action calza">
+            <p className="player_identifier">Player: 1</p>
+            Calza!</div>
 
         </div>
       </div>
