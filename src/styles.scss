@@ -211,7 +211,17 @@ body {
     justify-content: space-around;
     align-items: center;
     width: 100%;
+
     // width: fit-content;
+    .action_display {
+        flex: 50%;
+
+        .bet_history {
+            max-height: 75vh; // magic number
+            overflow-y: auto;
+        }
+
+    }
 
 }
 
@@ -231,17 +241,32 @@ body {
     }
 }
 
-.bet {
+.bet,
+.action {
     // border: 1px solid black;
     border-radius: 0.5em;
     margin: 0.5em 0;
     background-color: rgb(219, 255, 236);
+
+    &.dudo {
+        background-color: rgb(250,
+                167,
+                152);
+    }
+
+
+    &.calza {
+        background-color: rgb(237, 211, 78);
+    }
+
+
     display: flex;
     // width: fit-content;
     align-items: center;
     // flex-direction: row;
     // border: 1px solid black;
-    justify-content: center;
+    justify-content: space-between; // could also use space_between
+    padding: 0 2em;
 
     .player_identifier {
         font-size: 1.5em;
@@ -249,6 +274,11 @@ body {
         .player_name {
             font-weight: 600;
         }
+    }
+
+    .action_content {
+        display: flex;
+        align-items: center;
     }
 
     .bet_multiplier {
@@ -270,9 +300,12 @@ body {
 
     }
 
-}
+    .action_text {
+        // border: 1px solid black;
+        font-size: 1.5em;
+        font-weight: 600;
+        flex: 10%;
+    }
 
-.action_display {
-    flex: 50%;
 
 }

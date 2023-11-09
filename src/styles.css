@@ -172,6 +172,13 @@ body {
   align-items: center;
   width: 100%;
 }
+.game_area .action_display {
+  flex: 50%;
+}
+.game_area .action_display .bet_history {
+  max-height: 75vh;
+  overflow-y: auto;
+}
 
 .my_actions {
   border: 1px solid black;
@@ -188,34 +195,56 @@ body {
   color: lightblue;
 }
 
-.bet {
+.bet,
+.action {
   border-radius: 0.5em;
   margin: 0.5em 0;
   background-color: rgb(219, 255, 236);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 2em;
 }
-.bet .player_identifier {
+.bet.dudo,
+.action.dudo {
+  background-color: rgb(250, 167, 152);
+}
+.bet.calza,
+.action.calza {
+  background-color: rgb(237, 211, 78);
+}
+.bet .player_identifier,
+.action .player_identifier {
   font-size: 1.5em;
 }
-.bet .player_identifier .player_name {
+.bet .player_identifier .player_name,
+.action .player_identifier .player_name {
   font-weight: 600;
 }
-.bet .bet_multiplier {
+.bet .action_content,
+.action .action_content {
+  display: flex;
+  align-items: center;
+}
+.bet .bet_multiplier,
+.action .bet_multiplier {
   font-size: 2em;
   display: flex;
   align-items: center;
 }
 .bet .bet_multiplier input,
-.bet .bet_multiplier p {
+.bet .bet_multiplier p,
+.action .bet_multiplier input,
+.action .bet_multiplier p {
   text-align: end;
   font-size: 1em;
   width: 2em;
 }
-
-.action_display {
-  flex: 50%;
+.bet .action_text,
+.action .action_text {
+  font-size: 1.5em;
+  font-weight: 600;
+  flex: 10%;
 }
 
 /*# sourceMappingURL=styles.css.map */

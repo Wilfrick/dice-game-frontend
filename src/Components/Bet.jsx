@@ -5,10 +5,12 @@ const Bet = ({ player_identifier, bet_multiplier, value }) => {
   return (
     <div className="bet">
       <p className="player_identifier">Player: <span className="player_name">{player_identifier}</span> </p>
-      <div className="bet_multiplier">
-        <p>{bet_multiplier}</p>x
+      <div className="action_content">
+        <div className="bet_multiplier">
+          <p>{bet_multiplier}</p>x
+        </div>
+        <Hand values={[value]}></Hand>
       </div>
-      <Hand values={[value]}></Hand>
     </div>
   )
 }

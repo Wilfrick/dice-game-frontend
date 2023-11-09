@@ -3,9 +3,12 @@ import GameArea from './Components/GameArea'
 // import DiceFace from './Compenents/DiceFace'
 import Hand from './Components/Hand'
 import Bet from './Components/Bet'
+import Dudo from './Components/Dudo'
+import Calza from './Components/Calza'
 import { useState } from 'react'
 
 import { numberToString, stringToNumber } from './Utils/numberParser'
+
 
 const ws = new WebSocket("ws://localhost:12345/ws");
 
@@ -16,12 +19,12 @@ function MakeBet() {
   console.log("Hi from Jim")
 }
 
-function sendMove(playerMove) {
+function sendMove(moveType, playerMove) {
   // let GameID = 1234
   // let PlayerID = 123
   console.log(`Sending ${JSON.stringify(playerMove)}`)
   // let Contents = { GameID, PlayerID, MoveSTR: playerMove }
-  let Contents = { MoveType: "Bet", Value: playerMove }
+  let Contents = { MoveType: moveType, Value: playerMove }
   let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
   ws.send(str_move)
 
@@ -77,7 +80,7 @@ function App() {
     //Passed all validation
     // let playerMove = betRankBox.value + " " + selectedIndex
     let playerMove = { NumDice: Number(betRankBox.value), FaceVal: stringToNumber(selectedIndex) }
-    sendMove(playerMove)
+    sendMove("Bet", playerMove)
   }
 
 
@@ -104,20 +107,31 @@ function App() {
           <button className="Dudo" type="button" onClick={() => sendMove("Dudo")}>Dudo</button>
           <button className="Calza" type="button" onClick={() => sendMove("Calza")}>Calza</button>
         </div>
-        <div className="other_actions">
+        <div className="bet_history">
           {movesMade.map(({
             MoveMade: {
               MoveType,
               Value: {
                 NumDice,
                 FaceVal } },
-            PlayerIndex }, i) =>
-            <Bet player_identifier={PlayerIndex.toString()} bet_multiplier={NumDice} value={numberToString(FaceVal)} key={i} />)}
+            PlayerIndex }, i) => {
+            switch (MoveType) {
+              case "Bet":
+                return <Bet player_identifier={PlayerIndex.toString()} bet_multiplier={NumDice} value={numberToString(FaceVal)} key={i} />
+              case "Dudo":
+                return <Dudo player_identifier={PlayerIndex.toString()} key={i} />
+              case "Calza":
+                return <Calza player_identifier={PlayerIndex.toString()} key={i} />
+            }
+
+          }
+
+          )}
           <Bet player_identifier="Jim" bet_multiplier={3} value="two" />
-          <Bet player_identifier="Alex" bet_multiplier={3} value="three" />
+          <Bet player_identifier="Alexander the first" bet_multiplier={3} value="three" />
 
 
-
+          <Dudo />
           <div className="action dudo">
             <p className="player_identifier">Player: 5</p>
             Dudo!</div>
