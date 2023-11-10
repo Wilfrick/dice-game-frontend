@@ -9,9 +9,15 @@ $edge_length: 2em;
 $normal_dice_face_values: "two", "three", "four", "five", "six";
 $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 
+body {
+    margin: 0;
+    padding: 8px;
+}
+
 .hands {
     counter-reset: matching_dice;
-    border: 1px solid black;
+    border: 1px solid red;
+    flex: 50%;
     width: fit-content;
 
 
@@ -199,12 +205,23 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 }
 
 .game_area {
+    margin: 0;
     border: 1px solid black;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    // width: 100vw;
-    width: fit-content;
+    width: 100%;
+
+    // width: fit-content;
+    .action_display {
+        flex: 50%;
+
+        .bet_history {
+            max-height: 75vh; // magic number
+            overflow-y: auto;
+        }
+
+    }
 
 }
 
@@ -213,6 +230,7 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
     display: flex;
     align-items: stretch;
     flex-direction: column;
+
 
     button {
         width: 100%;
@@ -224,13 +242,45 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
     }
 }
 
-.bet {
+.bet,
+.action {
+    // border: 1px solid black;
+    border-radius: 0.5em;
+    margin: 0.5em 0;
+    background-color: rgb(219, 255, 236);
+
+    &.dudo {
+        background-color: rgb(250,
+                167,
+                152);
+    }
+
+
+    &.calza {
+        background-color: rgb(237, 211, 78);
+    }
+
+
     display: flex;
     // width: fit-content;
     align-items: center;
     // flex-direction: row;
     // border: 1px solid black;
-    justify-content: center;
+    justify-content: space-between; // could also use space_between
+    padding: 0 2em;
+
+    .player_identifier {
+        font-size: 1.5em;
+
+        .player_name {
+            font-weight: 600;
+        }
+    }
+
+    .action_content {
+        display: flex;
+        align-items: center;
+    }
 
     .bet_multiplier {
         // border: 1px solid black;
@@ -242,12 +292,21 @@ $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 
         input,
         p {
-            border: 1px solid lightgrey;
+            // border: 1px solid lightgrey;
             // height: 100%;
+            text-align: end;
             font-size: 1em;
             width: 2em;
         }
 
     }
+
+    .action_text {
+        // border: 1px solid black;
+        font-size: 1.5em;
+        font-weight: 600;
+        flex: 10%;
+    }
+
 
 }
