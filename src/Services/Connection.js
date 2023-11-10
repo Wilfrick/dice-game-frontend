@@ -4,22 +4,24 @@ import { numberToString, stringToNumber } from "../Utils/numberParser";
 
 const ws = new WebSocket("ws://localhost:12345/ws");
 
-export function registerWsCallback(setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex) {
+export function registerWsCallback(stateDictionary) {
     ws.onmessage = (event) => {
         console.log(event.data);
         console.log(JSON.parse(event.data));
         let parsedMessage = JSON.parse(event.data)
-        processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex)
+        processMessage(parsedMessage, stateDictionary)
 
     }
 }
 
 
-function processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex) {
+function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, playerIndex, setPlayerIndex, allCurrentHands, setAllCurrentHands }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
-            setCurrentPlayerHand(parsedMessage.Contents.PlayerHand.map(numberToString))
+            let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
+            setCurrentPlayerHand(localPlayerHand)
             setPlayerIndex(parsedMessage.Contents.PlayerIndex)
+            setAllCurrentHands([localPlayerHand, ...(allCurrentHands.slice(1))])
             break
 
 
@@ -29,6 +31,29 @@ function processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMoves
             setMovesMade([parsedMessage.Contents, ...movesMade])
             // setBetsMade([parsedMessage.Contents.Value])
             break
+
+        case "PlayerHandLengthsUpdate":
+            console.log(`PlayerHandLengthsUpdate: ${parsedMessage.Contents}`)
+            let localCurrentHands = parsedMessage.Contents.PlayerHandLengths
+            // localCurrentHands = [5, 5, 5, 5, 5]
+            console.log(`1 localCurrentHands: ${localCurrentHands}, ${typeof localCurrentHands}, ${localCurrentHands[1]}`);
+            localCurrentHands = localCurrentHands.map((x) => Array.from({ length: x }, () => "unknown"))
+            // console.log(`2 localCurrentHands: ${localCurrentHands}`);
+
+            // console.log(`3 localCurrentHands: ${localCurrentHands}, ${typeof localCurrentHands}, ${localCurrentHands[1]}, ${localCurrentHands[0][2]}`);
+            // let otherLocalCurrentHands = Array.from({ length: 4 }, () => 0)
+            // console.log(`Other: ${otherLocalCurrentHands}`)
+            // localCurrentHands = localCurrentHands.slice(playerIndex) + localCurrentHands.slice(0, playerIndex)
+            if (currentPlayerHand.length) { localCurrentHands[0] = currentPlayerHand }
+
+
+            // currentPlayerHand.length() && (localCurrentHands[playerIndex] = currentPlayerHand) // cursed, but possibly out there
+
+
+            setAllCurrentHands(localCurrentHands)
+            break
+        // [4, 5, 3, 4 ,1]
+        // [undefined, undefined, undefined, undefined, undefined]
 
 
     }

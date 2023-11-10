@@ -21,8 +21,14 @@ function App() {
   const [playerIndex, setPlayerIndex] = useState(undefined)
   const [allCurrentHands, setAllCurrentHands] = useState([])
 
-  
-  registerWsCallback(setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex)
+  let stateDictionary = {
+    selectedIndex, setSelectedIndex,
+    currentPlayerHand, setCurrentPlayerHand,
+    movesMade, setMovesMade,
+    playerIndex, setPlayerIndex,
+    allCurrentHands, setAllCurrentHands,
+  }
+  registerWsCallback(stateDictionary)
 
 
 
@@ -33,9 +39,11 @@ function App() {
     <>
       <GameArea>
         <div className="hands six selected">
-          <Hand values={["one", "two", "three", "three", "four"]}></Hand>
-          <Hand values={currentPlayerHand}></Hand>
-
+          {/* <Hand values={["one", "two", "three", "three", "four"]}></Hand>
+          <Hand values={currentPlayerHand}></Hand> */}
+          {allCurrentHands.map(
+            (hand, i) => <Hand values={allCurrentHands[i]} key={i}></Hand>
+          )}
         </div>
         <div className="action_display">
           <div className="my_actions">
