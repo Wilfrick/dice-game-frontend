@@ -4,21 +4,22 @@ import { numberToString, stringToNumber } from "../Utils/numberParser";
 
 const ws = new WebSocket("ws://localhost:12345/ws");
 
-export function registerWsCallback(setCurrentPlayerHand, movesMade, setMovesMade) {
+export function registerWsCallback(setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex) {
     ws.onmessage = (event) => {
         console.log(event.data);
         console.log(JSON.parse(event.data));
         let parsedMessage = JSON.parse(event.data)
-        processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMovesMade)
+        processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex)
 
     }
 }
 
 
-function processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMovesMade) {
+function processMessage(parsedMessage, setCurrentPlayerHand, movesMade, setMovesMade, setPlayerIndex) {
     switch (parsedMessage?.TypeDescriptor) {
-        case "PlayerHand":
-            setCurrentPlayerHand(parsedMessage.Contents.map(numberToString))
+        case "SinglePlayerHandContents":
+            setCurrentPlayerHand(parsedMessage.Contents.PlayerHand.map(numberToString))
+            setPlayerIndex(parsedMessage.Contents.PlayerIndex)
             break
 
 
@@ -41,7 +42,11 @@ export function sendMove(moveType, playerMove) {
     let Contents = { MoveType: moveType, Value: playerMove }
     let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
     ws.send(str_move)
+}
 
+export function sendGameStart() {
+    let str_gameStart = JSON.stringify({ "TypeDescriptor": "GameStart" })
+    ws.send(str_gameStart)
 }
 
 export function betAttempted(betRank, selectedIndex) {
