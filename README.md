@@ -1,8 +1,15 @@
-# React + Vite
+# dice-game-frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This will serve as the frontend for an online dice game.
 
-Currently, two official plugins are available:
+Built with React + Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is currently a work in progress.
+
+
+# Usage
+To serve the app in dev mode use `npm run dev`. To build and then serve in production mode (using a local testing server) use `npm run build` followed by `npm run preview`
+
+To see the game in action you will need to run the back end, which can be found [here](https://github.com/Wilfrick/dice-game-backend)
+
+Once the server is running, use the 'Start Game' button to start a game. Then different player bets can be made. Again, please note that this is currently a work in progress.
