@@ -6,7 +6,7 @@ const ws = new WebSocket("ws://localhost:12345/ws");
 
 export function registerWsCallback(stateDictionary) {
     ws.onmessage = (event) => {
-        console.log(event.data);
+        // console.log(event.data);
         console.log(JSON.parse(event.data));
         let parsedMessage = JSON.parse(event.data)
         processMessage(parsedMessage, stateDictionary)
@@ -15,13 +15,16 @@ export function registerWsCallback(stateDictionary) {
 }
 
 
-function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, playerIndex, setPlayerIndex, allCurrentHands, setAllCurrentHands }) {
+function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, playerIndex, setPlayerIndex, 
+    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands,}) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
             setCurrentPlayerHand(localPlayerHand)
             setPlayerIndex(parsedMessage.Contents.PlayerIndex)
-            setAllCurrentHands([localPlayerHand, ...(allCurrentHands.slice(1))])
+            // allCurrentHands[parsedMessage.Contents.PlayerIndex] = localPlayerHand
+            // setAllCurrentHands(allCurrentHands)
+            // setAllCurrentHands([localPlayerHand, ...(allCurrentHands.slice(1))])
             break
 
 
@@ -44,7 +47,11 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             // let otherLocalCurrentHands = Array.from({ length: 4 }, () => 0)
             // console.log(`Other: ${otherLocalCurrentHands}`)
             // localCurrentHands = localCurrentHands.slice(playerIndex) + localCurrentHands.slice(0, playerIndex)
-            if (currentPlayerHand.length) { localCurrentHands[0] = currentPlayerHand }
+            // if (currentPlayerHand.length) { localCurrentHands[0] = currentPlayerHand }
+            
+            // We have succesfully created another race condition documented below for posterity
+            // if (currentPlayerHand.length) { localCurrentHands[playerIndex] = currentPlayerHand }
+
 
 
             // currentPlayerHand.length() && (localCurrentHands[playerIndex] = currentPlayerHand) // cursed, but possibly out there
@@ -52,8 +59,17 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
 
             setAllCurrentHands(localCurrentHands)
             break
+        case "RoundResult":
+            console.log(parsedMessage.Contents)
+            if (parsedMessage.Contents.Result == "next") {
+                setCurrentTurn(parsedMessage.Contents.PlayerIndex)
+            }
+            break
         // [4, 5, 3, 4 ,1]
         // [undefined, undefined, undefined, undefined, undefined]
+        case "PlayerHandsContents":
+            console.log(parsedMessage.Contents)
+            setRoundRevealHands(parsedMessage.Contents.PlayerHands.map(playerHand => playerHand.map(numberToString)))
 
 
     }
