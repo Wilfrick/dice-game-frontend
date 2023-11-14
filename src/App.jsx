@@ -2,6 +2,7 @@ import './styles.css'
 import GameArea from './Components/GameArea'
 // import DiceFace from './Compenents/DiceFace'
 import Hand from './Components/Hand'
+import LabelledHand from './Components/LabelledHand'
 import Bet from './Components/Bet'
 import Dudo from './Components/Dudo'
 import Calza from './Components/Calza'
@@ -20,6 +21,8 @@ function App() {
   const [movesMade, setMovesMade] = useState([])
   const [playerIndex, setPlayerIndex] = useState(undefined)
   const [allCurrentHands, setAllCurrentHands] = useState([])
+  const [currentTurn, setCurrentTurn] = useState(undefined)
+  const [roundRevealHands, setRoundRevealHands] = useState([])
 
   let stateDictionary = {
     selectedIndex, setSelectedIndex,
@@ -27,22 +30,31 @@ function App() {
     movesMade, setMovesMade,
     playerIndex, setPlayerIndex,
     allCurrentHands, setAllCurrentHands,
+    currentTurn, setCurrentTurn,
+    roundRevealHands, setRoundRevealHands,
   }
   registerWsCallback(stateDictionary)
 
-
+  allCurrentHands[playerIndex] = currentPlayerHand
 
 
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
     <>
+    
       <GameArea>
+        
         <div className="hands six selected">
+          <p>You are player: {playerIndex}. It is currently Player {currentTurn}'s turn</p>
           {/* <Hand values={["one", "two", "three", "three", "four"]}></Hand>
           <Hand values={currentPlayerHand}></Hand> */}
           {allCurrentHands.map(
-            (hand, i) => <Hand values={allCurrentHands[i]} key={i}></Hand>
+            (hand, i) => <LabelledHand values={hand} playerName={i} key={i}></LabelledHand>
+          )}
+          <p>Starting old hands</p>
+          {roundRevealHands.map(
+            (hand, j) => <LabelledHand values={hand} playerName={j} key={j+20}></LabelledHand>
           )}
         </div>
         <div className="action_display">
