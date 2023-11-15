@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { betAttempted } from './Services/Connection'
 import { numberToString, stringToNumber } from './Utils/numberParser'
 import { sendMove, registerWsCallback, sendGameStart } from './Services/Connection'
+import validRelativePreviousBet from './Utils/validRelativePreviousBet'
 
 function App() {
 
@@ -40,7 +41,7 @@ function App() {
   allCurrentHands[playerClientIndex] = currentPlayerHand
 
   let isMyTurn = (playerClientIndex == currentTurn)
-  let canMakeBet = betRankBoxValue && selectedIndex
+  let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade.Value))
   let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
