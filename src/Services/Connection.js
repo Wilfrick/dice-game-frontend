@@ -15,13 +15,13 @@ export function registerWsCallback(stateDictionary) {
 }
 
 
-function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, playerIndex, setPlayerIndex, 
-    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands,}) {
+function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
+    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
             setCurrentPlayerHand(localPlayerHand)
-            setPlayerIndex(parsedMessage.Contents.PlayerIndex)
+            setClientPlayerIndex(parsedMessage.Contents.PlayerIndex)
             // allCurrentHands[parsedMessage.Contents.PlayerIndex] = localPlayerHand
             // setAllCurrentHands(allCurrentHands)
             // setAllCurrentHands([localPlayerHand, ...(allCurrentHands.slice(1))])
@@ -48,7 +48,7 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             // console.log(`Other: ${otherLocalCurrentHands}`)
             // localCurrentHands = localCurrentHands.slice(playerIndex) + localCurrentHands.slice(0, playerIndex)
             // if (currentPlayerHand.length) { localCurrentHands[0] = currentPlayerHand }
-            
+
             // We have succesfully created another race condition documented below for posterity
             // if (currentPlayerHand.length) { localCurrentHands[playerIndex] = currentPlayerHand }
 

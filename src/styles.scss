@@ -239,6 +239,10 @@ body {
         border-radius: 0.2em;
         background-color: darkgreen;
         color: lightblue;
+
+        &:disabled {
+            background-color: rgb(98, 133, 98);
+        }
     }
 }
 
@@ -308,5 +312,15 @@ body {
         flex: 10%;
     }
 
+
+    @each $dice_face_value in $all_dice_face_values {
+        &.selected.#{$dice_face_value} :not(.unknown) {
+
+            .diceFace.#{$dice_face_value}:not(.unknown) {
+                border: 4px solid red;
+                counter-increment: matching_dice;
+            }
+        }
+    }
 
 }
