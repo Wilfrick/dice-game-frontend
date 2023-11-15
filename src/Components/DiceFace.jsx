@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 
-const DiceFace = ({ value, setSelectedIndex }) => {
-    // if (setSelectedIndex) { 
+const DiceFace = ({ value, setSelectedIndex, setCurrentHoveredValue }) => {
+    // if (setSelectedIndex) {
     //     console.log("SetselectedIndex is a truthy value (probably a function)");
     // }
+
+
     return (
-        <div className={"diceFace " + value} onClick={() => setSelectedIndex(value)}>
+        <div className={"diceFace " + value} onClick={() => setSelectedIndex?.(value)}
+            onMouseEnter={() => setCurrentHoveredValue?.(value)}
+            onMouseLeave={() => setCurrentHoveredValue?.(null)}>
             <div className="pip top_left"></div>
             <div className="pip top_right"></div>
             <div className="pip middle_left"></div>
@@ -17,7 +21,9 @@ const DiceFace = ({ value, setSelectedIndex }) => {
     )
 }
 DiceFace.propTypes = {
-    value: PropTypes.string
+    value: PropTypes.string,
+    setSelectedIndex: PropTypes.func,
+    setCurrentHoveredValue: PropTypes.func
 }
 
 export default DiceFace

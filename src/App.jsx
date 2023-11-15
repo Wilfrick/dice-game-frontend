@@ -15,17 +15,18 @@ import { sendMove, registerWsCallback, sendGameStart } from './Services/Connecti
 
 function App() {
 
-  const betRankBox = document.querySelector(".bet_multiplier input")
-  const [selectedIndex, setSelectedIndex] = useState(undefined)
+  // const betRankBox = document.querySelector(".bet_multiplier input")
+  const [selectedIndex, setSelectedIndex] = useState(undefined) // should really be selectedValue
   const [currentPlayerHand, setCurrentPlayerHand] = useState([])
   const [movesMade, setMovesMade] = useState([])
   const [playerClientIndex, setClientPlayerIndex] = useState(undefined)
   const [allCurrentHands, setAllCurrentHands] = useState([])
   const [currentTurn, setCurrentTurn] = useState(undefined)
   const [roundRevealHands, setRoundRevealHands] = useState([])
-  const [betRankBoxValue, setBetRankBoxValue] = useState(undefined)
+  const [betRankBoxValue, setBetRankBoxValue] = useState(1)
+  const [currentHoveredValue, setCurrentHoveredValue] = useState(undefined)
 
-  let stateDictionary = {
+  let wsStateDictionary = {
     selectedIndex, setSelectedIndex,
     currentPlayerHand, setCurrentPlayerHand,
     movesMade, setMovesMade,
@@ -34,12 +35,13 @@ function App() {
     currentTurn, setCurrentTurn,
     roundRevealHands, setRoundRevealHands,
   }
-  registerWsCallback(stateDictionary)
+  registerWsCallback(wsStateDictionary)
 
   allCurrentHands[playerClientIndex] = currentPlayerHand
 
   let isMyTurn = (playerClientIndex == currentTurn)
-  let canMakeBet = betRankBox.value && selectedIndex
+  let canMakeBet = betRankBoxValue && selectedIndex
+  let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
@@ -47,13 +49,15 @@ function App() {
 
       <GameArea>
 
-        <div className="hands six selected">
+        <div className={`hands${currentHoveredValue ? " " + currentHoveredValue : ""} selected`}>
           <p>You are player: {playerClientIndex}. It is currently Player {currentTurn}'s turn</p>
           {/* <Hand values={["one", "two", "three", "three", "four"]}></Hand>
           <Hand values={currentPlayerHand}></Hand> */}
           {allCurrentHands.map(
             (hand, i) => <LabelledHand values={hand} playerName={i} key={i}></LabelledHand>
           )}
+        </div>
+        <div className={`hands${lastBetRankMade ? " " + numberToString(lastBetRankMade) : ""} selected`}> {/* surly there is a better way than a ? : */}
           <p>Starting old hands</p>
           {roundRevealHands.map(
             (hand, j) => <LabelledHand values={hand} playerName={j} key={j + 20}></LabelledHand>
@@ -61,8 +65,9 @@ function App() {
         </div>
         <div className="action_display">
           <div className="my_actions">
-            <BetSelector selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} />
-            <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBox.value, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
+            <BetSelector selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}
+              betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} setCurrentHoveredValue={setCurrentHoveredValue} />
+            <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBoxValue, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
             <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!isMyTurn}>Dudo</button>
             <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!isMyTurn}>Calza</button>
           </div>
