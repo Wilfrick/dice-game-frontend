@@ -19,34 +19,36 @@ function App() {
   const [selectedIndex, setSelectedIndex] = useState(undefined)
   const [currentPlayerHand, setCurrentPlayerHand] = useState([])
   const [movesMade, setMovesMade] = useState([])
-  const [playerIndex, setPlayerIndex] = useState(undefined)
+  const [playerClientIndex, setClientPlayerIndex] = useState(undefined)
   const [allCurrentHands, setAllCurrentHands] = useState([])
   const [currentTurn, setCurrentTurn] = useState(undefined)
   const [roundRevealHands, setRoundRevealHands] = useState([])
+  const [betRankBoxValue, setBetRankBoxValue] = useState(undefined)
 
   let stateDictionary = {
     selectedIndex, setSelectedIndex,
     currentPlayerHand, setCurrentPlayerHand,
     movesMade, setMovesMade,
-    playerIndex, setPlayerIndex,
+    playerClientIndex, setClientPlayerIndex,
     allCurrentHands, setAllCurrentHands,
     currentTurn, setCurrentTurn,
     roundRevealHands, setRoundRevealHands,
   }
   registerWsCallback(stateDictionary)
 
-  allCurrentHands[playerIndex] = currentPlayerHand
+  allCurrentHands[playerClientIndex] = currentPlayerHand
 
-
+  let isMyTurn = (playerClientIndex == currentTurn)
+  let canMakeBet = betRankBox.value && selectedIndex
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
     <>
-    
+
       <GameArea>
-        
+
         <div className="hands six selected">
-          <p>You are player: {playerIndex}. It is currently Player {currentTurn}'s turn</p>
+          <p>You are player: {playerClientIndex}. It is currently Player {currentTurn}'s turn</p>
           {/* <Hand values={["one", "two", "three", "three", "four"]}></Hand>
           <Hand values={currentPlayerHand}></Hand> */}
           {allCurrentHands.map(
@@ -54,15 +56,15 @@ function App() {
           )}
           <p>Starting old hands</p>
           {roundRevealHands.map(
-            (hand, j) => <LabelledHand values={hand} playerName={j} key={j+20}></LabelledHand>
+            (hand, j) => <LabelledHand values={hand} playerName={j} key={j + 20}></LabelledHand>
           )}
         </div>
         <div className="action_display">
           <div className="my_actions">
-            <BetSelector setSelectedIndex={setSelectedIndex} />
-            <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBox.value, selectedIndex)}>Make Bet</button>
-            <button className="Dudo" type="button" onClick={() => sendMove("Dudo")}>Dudo</button>
-            <button className="Calza" type="button" onClick={() => sendMove("Calza")}>Calza</button>
+            <BetSelector selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} />
+            <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBox.value, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
+            <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!isMyTurn}>Dudo</button>
+            <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!isMyTurn}>Calza</button>
           </div>
           <div className="bet_history">
             {movesMade.map(
@@ -83,7 +85,7 @@ function App() {
 
           </div>
         </div>
-      </GameArea>
+      </GameArea >
       <div className='my_actions'>
         <button className="start_game" type="button" onClick={() => { sendGameStart(); console.log("StartGameButton") }}>Start Game</button>
       </div>

@@ -194,6 +194,9 @@ body {
   background-color: darkgreen;
   color: lightblue;
 }
+.my_actions button:disabled {
+  background-color: rgb(98, 133, 98);
+}
 
 .bet,
 .action {
@@ -245,6 +248,36 @@ body {
   font-size: 1.5em;
   font-weight: 600;
   flex: 10%;
+}
+.bet.selected.one :not(.unknown) .diceFace.one:not(.unknown),
+.action.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
+  border: 4px solid red;
+  counter-increment: matching_dice;
+}
+.bet.selected.two :not(.unknown) .diceFace.two:not(.unknown),
+.action.selected.two :not(.unknown) .diceFace.two:not(.unknown) {
+  border: 4px solid red;
+  counter-increment: matching_dice;
+}
+.bet.selected.three :not(.unknown) .diceFace.three:not(.unknown),
+.action.selected.three :not(.unknown) .diceFace.three:not(.unknown) {
+  border: 4px solid red;
+  counter-increment: matching_dice;
+}
+.bet.selected.four :not(.unknown) .diceFace.four:not(.unknown),
+.action.selected.four :not(.unknown) .diceFace.four:not(.unknown) {
+  border: 4px solid red;
+  counter-increment: matching_dice;
+}
+.bet.selected.five :not(.unknown) .diceFace.five:not(.unknown),
+.action.selected.five :not(.unknown) .diceFace.five:not(.unknown) {
+  border: 4px solid red;
+  counter-increment: matching_dice;
+}
+.bet.selected.six :not(.unknown) .diceFace.six:not(.unknown),
+.action.selected.six :not(.unknown) .diceFace.six:not(.unknown) {
+  border: 4px solid red;
+  counter-increment: matching_dice;
 }
 
 /*# sourceMappingURL=styles.css.map */
