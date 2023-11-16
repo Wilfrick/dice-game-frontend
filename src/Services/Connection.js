@@ -2,7 +2,8 @@
 // And the sending of moves
 import { numberToString, stringToNumber } from "../Utils/numberParser";
 
-const ws = new WebSocket("ws://localhost:12345/ws");
+const ws = new WebSocket("ws://aw808.user.srcf.net:32156/ws");
+// const ws = new WebSocket("ws://localhost:32156/ws");
 
 export function registerWsCallback(stateDictionary) {
     ws.onmessage = (event) => {
