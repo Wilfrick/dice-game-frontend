@@ -1,8 +1,12 @@
 // Should be concerned with the websocket
 // And the sending of moves
 import { numberToString, stringToNumber } from "../Utils/numberParser";
-
-const ws = new WebSocket("ws://aw808.user.srcf.net:32156/ws");
+import config from "../../config.json"
+// console.log(config)
+// console.log(`ws://${config.WebsocketUrl}:${config.WebsocketPort}/ws`)
+let address = `ws://${config.WebsocketUrl}:${config.WebsocketPort}/ws`
+const ws = new WebSocket(address);
+// const ws = new WebSocket("ws://aw808.user.srcf.net:32156/ws");
 // const ws = new WebSocket("ws://localhost:32156/ws");
 
 export function registerWsCallback(stateDictionary) {
