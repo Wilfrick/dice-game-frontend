@@ -69,6 +69,7 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             if (parsedMessage.Contents.Result == "next") {
                 setCurrentTurn(parsedMessage.Contents.PlayerIndex)
             }
+            setBetRankBoxValue(1)
             break
         // [4, 5, 3, 4 ,1]
         // [undefined, undefined, undefined, undefined, undefined]
