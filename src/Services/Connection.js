@@ -21,7 +21,7 @@ export function registerWsCallback(stateDictionary) {
 
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
-    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, }) {
+    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, setLobbyPlayerCount, navigate }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
@@ -75,7 +75,17 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
         case "PlayerHandsContents":
             console.log(parsedMessage.Contents)
             setRoundRevealHands(parsedMessage.Contents.PlayerHands.map(playerHand => playerHand.map(numberToString)))
-
+            break
+        case "Lobby Join Accepted":
+            setLobbyPlayerCount(parsedMessage.Contents.NumPlayers)
+            navigate("/lobby")
+            break
+        case "Lobby Join Failed":
+            console.log("You failed to join the target lobby")
+            break
+        // case "Lobby Created":
+        //     let lobbyID = parsedMessage.Contents.LobbyID
+        //     setCurrentLobbyID(lobbyID)
 
     }
 }
@@ -83,11 +93,18 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
 export function sendMove(moveType, playerMove) {
     // let GameID = 1234
     // let PlayerID = 123
-    console.log(`Sending ${JSON.stringify(playerMove)}`)
+    console.log(`Sending ${JSON.stringify(playerMove)}`) // should really log out the exact object we are sending
     // let Contents = { GameID, PlayerID, MoveSTR: playerMove }
     let Contents = { MoveType: moveType, Value: playerMove }
     let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
     ws.send(str_move)
+}
+
+export function packSendMessage(typeDescriptor, contents) {
+    let message = { TypeDescriptor: typeDescriptor, Contents: contents }
+    let str_message = JSON.stringify(message)
+    console.log(`Sending message ${str_message}`)
+    ws.send(str_message)
 }
 
 export function sendGameStart() {
