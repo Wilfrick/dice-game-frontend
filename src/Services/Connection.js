@@ -21,7 +21,7 @@ export function registerWsCallback(stateDictionary) {
 
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
-    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, setLobbyPlayerCount, navigate }) {
+    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
@@ -78,15 +78,26 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             break
         case "Lobby Join Accepted":
             setLobbyPlayerCount(parsedMessage.Contents.NumPlayers)
+            setLobbyID(parsedMessage.Contents.LobbyID)
             navigate("/lobby")
             break
         case "Lobby Join Failed":
             console.log("You failed to join the target lobby")
             break
+        case "Player Left Lobby":
+            console.log("A player has left this lobby")
+            setLobbyPlayerCount(parsedMessage.Contents.NewPlayerCount)
+            break
+        case "Game Started":
+            console.log("Your game has started")
+            navigate("/game/")
+            break
         // case "Lobby Created":
         //     let lobbyID = parsedMessage.Contents.LobbyID
         //     setCurrentLobbyID(lobbyID)
-
+        default:
+            console.log(`Received unknown message:`); // we shouldn't be here
+            console.dir(parsedMessage)
     }
 }
 

@@ -30,6 +30,7 @@ function App() {
   const [betRankBoxValue, setBetRankBoxValue] = useState(1)
   const [currentHoveredValue, setCurrentHoveredValue] = useState(undefined)
   const [lobbyPlayerCount, setLobbyPlayerCount] = useState(undefined) // will probably be calculated from some array of lobby players in the future
+  const [lobbyID, setLobbyID] = useState(undefined)
   const navigate = useNavigate()
 
   let wsStateDictionary = {
@@ -41,6 +42,7 @@ function App() {
     currentTurn, setCurrentTurn,
     roundRevealHands, setRoundRevealHands,
     lobbyPlayerCount, setLobbyPlayerCount,
+    lobbyID, setLobbyID,
     navigate
   }
   registerWsCallback(wsStateDictionary)
@@ -49,6 +51,7 @@ function App() {
 
   let isMyTurn = (playerClientIndex == currentTurn)
   let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade.Value))
+  let canCalza = allCurrentHands.filter(x => x.length).length > 2
   let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
@@ -56,7 +59,7 @@ function App() {
 
     <Routes>
       <Route path="/" element={<LandingPage />}></Route>
-      <Route path="/lobby/" element={<LobbyPage numPlayers={lobbyPlayerCount} />}></Route>
+      <Route path="/lobby/" element={<LobbyPage numPlayers={lobbyPlayerCount} navigate={navigate} LobbyID={lobbyID}/>}></Route>
       <Route path="/game/" element={<>
         <GameArea>
 
@@ -80,7 +83,7 @@ function App() {
                 betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} setCurrentHoveredValue={setCurrentHoveredValue} />
               <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBoxValue, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
               <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!isMyTurn}>Dudo</button>
-              <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!isMyTurn}>Calza</button>
+              <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!(isMyTurn && canCalza)}>Calza</button>
             </div>
             <div className="bet_history">
               {movesMade.map(
