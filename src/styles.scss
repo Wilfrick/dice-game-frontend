@@ -361,8 +361,33 @@ body {
                             // text-shadow: gold;
                             text-shadow: 1px 1px 5px #414180;
                         }
+            &.leave {
+                // color: red;
+                background-color: #cc1d25;
+            }
+            
         }
-
+    
+    }
+    .label_name {
+        font-weight: 600;
+    }
+    #lobby_hash {
+        color: rgb(3, 3, 88);
+        margin: 0.5em;
+        font-size: 2em;
+        font-weight: 600;
+        font-family: monospace;
+        &:hover {
+            // color: blue;
+            text-shadow: 1px 1px 10px #414180;
+            cursor: copy;
+        }
+        // font-kerning: none;
+    }
+    #LobbyPlayerCount{
+        font-weight: 1000;
+        font-size: 1.2em;
     }
     // height: 100vh;
 }

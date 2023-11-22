@@ -313,5 +313,26 @@ body {
 .landing_page .landing_page_action_container button#JoinLobbyButton:hover {
   text-shadow: 1px 1px 5px #414180;
 }
+.landing_page .landing_page_action_container button.leave {
+  background-color: #cc1d25;
+}
+.landing_page .label_name {
+  font-weight: 600;
+}
+.landing_page #lobby_hash {
+  color: rgb(3, 3, 88);
+  margin: 0.5em;
+  font-size: 2em;
+  font-weight: 600;
+  font-family: monospace;
+}
+.landing_page #lobby_hash:hover {
+  text-shadow: 1px 1px 10px #414180;
+  cursor: copy;
+}
+.landing_page #LobbyPlayerCount {
+  font-weight: 1000;
+  font-size: 1.2em;
+}
 
 /*# sourceMappingURL=styles.css.map */
