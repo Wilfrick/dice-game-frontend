@@ -9,9 +9,12 @@ $edge_length: 2em;
 $normal_dice_face_values: "two", "three", "four", "five", "six";
 $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 
+
+
 body {
     margin: 0;
     padding: 8px;
+    background-color: #ede9d9;
 }
 
 .hands {
@@ -323,4 +326,43 @@ body {
         }
     }
 
+}
+
+.landing_page {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 50vw;
+    h3{
+        font-size: 1.5em;
+        text-align: center;
+        font-weight: 400;
+    }
+    .landing_page_action_container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        // border: black solid 1px;
+        button {
+            height: 2em;
+            font-size: 1.5em;
+            border-radius: 0.2em;
+            background-color: darkgreen;
+            color: lightblue;
+            &#CreateLobbyButton:hover {
+                // text-shadow: gold;
+                text-shadow: 1px 1px 5px #ffcc00;
+            }
+            &#JoinLobbyButton:hover {
+                            // text-shadow: gold;
+                            text-shadow: 1px 1px 5px #414180;
+                        }
+        }
+
+    }
+    // height: 100vh;
 }

@@ -8,10 +8,11 @@ const LandingPage = () => {
 
 
     return (
-        <>
-            <p>Welcome to the dice game! We hope that you enjoy. Please click one of the following buttons to play. </p>
-            <Link to="game"> Game</Link>
-            <button onClick={() => {
+        <div className="landing_page">
+            <h3>Welcome to the dice game! We hope that you enjoy. Please click one of the following buttons to play. </h3>
+            {/* <Link to="game"> Game</Link> */}
+            <div className="landing_page_action_container">
+            <button id = "CreateLobbyButton" onClick={() => {
                 console.log("Tried to create a lobby")
                 packSendMessage("Create Lobby")
             }}>Create Lobby</button>
@@ -20,14 +21,17 @@ const LandingPage = () => {
                     <input type="text" name="" id="LobbyCodeEntryField" />
                 </label>
 
-                <button onClick={() => {
+                <button id = "JoinLobbyButton" onClick={() => {
                     console.log("Tried to join a lobby")
                     let LobbyID = document.querySelector("#LobbyCodeEntryField").value
                     packSendMessage("Join Lobby", { LobbyID })
                 }}>Join Lobby</button>
             </div>
-
-        </>
+            </div>
+            <p>This dice game (inspired by Perudo and Liars Dice) is a multiplayer dice-game where you make bets about the total number of dice around the table. Try to be the last alive player!
+            </p>
+        
+        </div>
     )
 }
 
