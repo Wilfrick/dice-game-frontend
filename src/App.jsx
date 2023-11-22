@@ -13,6 +13,9 @@ import { betAttempted } from './Services/Connection'
 import { numberToString, stringToNumber } from './Utils/numberParser'
 import { sendMove, registerWsCallback, sendGameStart } from './Services/Connection'
 import validRelativePreviousBet from './Utils/validRelativePreviousBet'
+import { Link, Route, Routes, useNavigate } from 'react-router-dom'
+import LandingPage from './Components/LandingPage'
+import LobbyPage from './Components/LobbyPage'
 
 function App() {
 
@@ -26,6 +29,10 @@ function App() {
   const [roundRevealHands, setRoundRevealHands] = useState([])
   const [betRankBoxValue, setBetRankBoxValue] = useState(1)
   const [currentHoveredValue, setCurrentHoveredValue] = useState(undefined)
+  const [lobbyPlayerCount, setLobbyPlayerCount] = useState(undefined) // will probably be calculated from some array of lobby players in the future
+  const [lobbyID, setLobbyID] = useState(undefined)
+  const navigate = useNavigate()
+  
 
   let wsStateDictionary = {
     selectedIndex, setSelectedIndex,
@@ -35,67 +42,78 @@ function App() {
     allCurrentHands, setAllCurrentHands,
     currentTurn, setCurrentTurn,
     roundRevealHands, setRoundRevealHands,
+    lobbyPlayerCount, setLobbyPlayerCount,
+    lobbyID, setLobbyID,
+    navigate
   }
   registerWsCallback(wsStateDictionary)
+
 
   allCurrentHands[playerClientIndex] = currentPlayerHand
 
   let isMyTurn = (playerClientIndex == currentTurn)
   let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade.Value))
+  let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
+  let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
   let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
-    <>
 
-      <GameArea>
+    <Routes>
+      <Route path="/" element={<LandingPage />}></Route>
+      <Route path="/lobby/" element={<LobbyPage numPlayers={lobbyPlayerCount} navigate={navigate} LobbyID={lobbyID}/>}></Route>
+      <Route path="/game/" element={<>
+        <GameArea>
 
-        <div className={`hands${currentHoveredValue ? " " + currentHoveredValue : ""} selected`}>
-          <p>You are player: {playerClientIndex}. It is currently Player {currentTurn}'s turn</p>
-          {/* <Hand values={["one", "two", "three", "three", "four"]}></Hand>
+          <div className={`hands${currentHoveredValue ? " " + currentHoveredValue : ""} selected`}>
+            <p>You are player: {playerClientIndex}. It is currently Player {currentTurn}'s turn</p>
+            {/* <Hand values={["one", "two", "three", "three", "four"]}></Hand>
           <Hand values={currentPlayerHand}></Hand> */}
-          {allCurrentHands.map(
-            (hand, i) => <LabelledHand values={hand} playerName={i} key={i}></LabelledHand>
-          )}
-        </div>
-        <div className={`hands${lastBetRankMade ? " " + numberToString(lastBetRankMade) : ""} selected`}> {/* surly there is a better way than a ? : */}
-          <p>Starting old hands</p>
-          {roundRevealHands.map(
-            (hand, j) => <LabelledHand values={hand} playerName={j} key={j + 20}></LabelledHand>
-          )}
-        </div>
-        <div className="action_display">
-          <div className="my_actions">
-            <BetSelector selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}
-              betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} setCurrentHoveredValue={setCurrentHoveredValue} />
-            <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBoxValue, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
-            <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!isMyTurn}>Dudo</button>
-            <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!isMyTurn}>Calza</button>
-          </div>
-          <div className="bet_history">
-            {movesMade.map(
-              (move, i) => <PlayerAction MoveMade={move.MoveMade} PlayerIndex={move.PlayerIndex} key={i} />
+            {allCurrentHands.map(
+              (hand, i) => <LabelledHand values={hand} playerName={i} key={i}></LabelledHand>
             )}
-            <Bet player_identifier="Jim" bet_multiplier={3} value="two" />
-            <Bet player_identifier="Alexander the first" bet_multiplier={3} value="three" />
-
-
-            <Dudo />
-            <div className="action dudo">
-              <p className="player_identifier">Player: 5</p>
-              Dudo!</div>
-
-            <div className="action calza">
-              <p className="player_identifier">Player: 1</p>
-              Calza!</div>
-
           </div>
+          <div className={`hands${lastBetRankMade ? " " + numberToString(lastBetRankMade) : ""} selected`}> {/* surly there is a better way than a ? : */}
+            <p>Starting old hands</p>
+            {roundRevealHands.map(
+              (hand, j) => <LabelledHand values={hand} playerName={j} key={j + 20}></LabelledHand>
+            )}
+          </div>
+          <div className="action_display">
+            <div className="my_actions">
+              <BetSelector selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}
+                betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} setCurrentHoveredValue={setCurrentHoveredValue} />
+              <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBoxValue, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
+              <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!(isMyTurn && canDudo)}>Dudo</button>
+              <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!(isMyTurn && canCalza)}>Calza</button>
+            </div>
+            <div className="bet_history">
+              {movesMade.map(
+                (move, i) => <PlayerAction MoveMade={move.MoveMade} PlayerIndex={move.PlayerIndex} key={i} />
+              )}
+              <Bet player_identifier="Jim" bet_multiplier={3} value="two" />
+              <Bet player_identifier="Alexander the first" bet_multiplier={3} value="three" />
+
+
+              <Dudo />
+              <div className="action dudo">
+                <p className="player_identifier">Player: 5</p>
+                Dudo!</div>
+
+              <div className="action calza">
+                <p className="player_identifier">Player: 1</p>
+                Calza!</div>
+
+            </div>
+          </div>
+        </GameArea >
+        <div className='my_actions'>
+          <button className="start_game" type="button" onClick={() => { sendGameStart(); console.log("StartGameButton") }}>Start Game</button>
         </div>
-      </GameArea >
-      <div className='my_actions'>
-        <button className="start_game" type="button" onClick={() => { sendGameStart(); console.log("StartGameButton") }}>Start Game</button>
-      </div>
-    </>
+      </>}>
+      </Route>
+    </Routes>
   )
 }
 

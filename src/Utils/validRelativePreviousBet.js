@@ -6,7 +6,7 @@ export default function validRelativePreviousBet(betNumDice, betFaceValSTR, prev
         return false
     }
     if (!prevMove) {
-        return true
+        return betFaceVal != 1        
     }
     let prevFaceVal = prevMove.FaceVal
     let prevNumDice = prevMove.NumDice

@@ -21,7 +21,7 @@ export function registerWsCallback(stateDictionary) {
 
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
-    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, }) {
+    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
@@ -69,25 +69,54 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             if (parsedMessage.Contents.Result == "next") {
                 setCurrentTurn(parsedMessage.Contents.PlayerIndex)
             }
+            setBetRankBoxValue(1)
             break
         // [4, 5, 3, 4 ,1]
         // [undefined, undefined, undefined, undefined, undefined]
         case "PlayerHandsContents":
             console.log(parsedMessage.Contents)
             setRoundRevealHands(parsedMessage.Contents.PlayerHands.map(playerHand => playerHand.map(numberToString)))
-
-
+            break
+        case "Lobby Join Accepted":
+            setLobbyPlayerCount(parsedMessage.Contents.NumPlayers)
+            setLobbyID(parsedMessage.Contents.LobbyID)
+            navigate("/lobby")
+            break
+        case "Lobby Join Failed":
+            console.log("You failed to join the target lobby")
+            break
+        case "Player Left Lobby":
+            console.log("A player has left this lobby")
+            setLobbyPlayerCount(parsedMessage.Contents.NewPlayerCount)
+            break
+        case "Game Started":
+            console.log("Your game has started")
+            navigate("/game/")
+            break
+        // case "Lobby Created":
+        //     let lobbyID = parsedMessage.Contents.LobbyID
+        //     setCurrentLobbyID(lobbyID)
+        default:
+            console.log(`Received unknown message:`); // we shouldn't be here
+            console.dir(parsedMessage)
     }
 }
 
 export function sendMove(moveType, playerMove) {
     // let GameID = 1234
     // let PlayerID = 123
-    console.log(`Sending ${JSON.stringify(playerMove)}`)
+    console.log(`Sending ${JSON.stringify(playerMove)}`) // should really log out the exact object we are sending
     // let Contents = { GameID, PlayerID, MoveSTR: playerMove }
     let Contents = { MoveType: moveType, Value: playerMove }
     let str_move = JSON.stringify({ "TypeDescriptor": "PlayerMove", "Contents": Contents })
     ws.send(str_move)
+}
+
+export function packSendMessage(typeDescriptor, contents) {
+    let message = { TypeDescriptor: typeDescriptor, Contents: contents }
+    let str_message = JSON.stringify(message)
+    console.log(`Sending message ${str_message}`)
+    ws.send(str_message)
 }
 
 export function sendGameStart() {
