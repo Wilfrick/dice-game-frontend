@@ -21,12 +21,13 @@ export function registerWsCallback(stateDictionary) {
 
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
-    allCurrentHands, setAllCurrentHands, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate }) {
+    allCurrentHands, setAllCurrentHands, setBetRankBoxValue, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
             setCurrentPlayerHand(localPlayerHand)
             setClientPlayerIndex(parsedMessage.Contents.PlayerIndex)
+            setBetRankBoxValue(1)
             // allCurrentHands[parsedMessage.Contents.PlayerIndex] = localPlayerHand
             // setAllCurrentHands(allCurrentHands)
             // setAllCurrentHands([localPlayerHand, ...(allCurrentHands.slice(1))])
@@ -69,7 +70,7 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             if (parsedMessage.Contents.Result == "next") {
                 setCurrentTurn(parsedMessage.Contents.PlayerIndex)
             }
-            setBetRankBoxValue(1)
+            
             break
         // [4, 5, 3, 4 ,1]
         // [undefined, undefined, undefined, undefined, undefined]

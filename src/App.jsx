@@ -42,6 +42,7 @@ function App() {
     allCurrentHands, setAllCurrentHands,
     currentTurn, setCurrentTurn,
     roundRevealHands, setRoundRevealHands,
+    betRankBoxValue, setBetRankBoxValue,
     lobbyPlayerCount, setLobbyPlayerCount,
     lobbyID, setLobbyID,
     navigate
