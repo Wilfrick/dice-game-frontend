@@ -32,6 +32,7 @@ function App() {
   const [lobbyPlayerCount, setLobbyPlayerCount] = useState(undefined) // will probably be calculated from some array of lobby players in the future
   const [lobbyID, setLobbyID] = useState(undefined)
   const navigate = useNavigate()
+  
 
   let wsStateDictionary = {
     selectedIndex, setSelectedIndex,
@@ -47,12 +48,13 @@ function App() {
   }
   registerWsCallback(wsStateDictionary)
 
+
   allCurrentHands[playerClientIndex] = currentPlayerHand
 
   let isMyTurn = (playerClientIndex == currentTurn)
   let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade.Value))
-  let canCalza = allCurrentHands.filter(x => x.length).length > 2
-  let canDudo = movesMade[-1]?.MoveType == "Bet"
+  let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
+  let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
   let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
@@ -83,7 +85,7 @@ function App() {
               <BetSelector selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}
                 betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} setCurrentHoveredValue={setCurrentHoveredValue} />
               <button className="Make_Bet" type="button" onClick={() => betAttempted(betRankBoxValue, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
-              <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!isMyTurn && canDudo}>Dudo</button>
+              <button className="Dudo" type="button" onClick={() => sendMove("Dudo")} disabled={!(isMyTurn && canDudo)}>Dudo</button>
               <button className="Calza" type="button" onClick={() => sendMove("Calza")} disabled={!(isMyTurn && canCalza)}>Calza</button>
             </div>
             <div className="bet_history">
