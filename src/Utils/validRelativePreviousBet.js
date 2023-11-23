@@ -5,11 +5,12 @@ export default function validRelativePreviousBet(betNumDice, betFaceValSTR, prev
     if (betNumDice < 1) {
         return false
     }
-    if (!prevMove) {
-        return betFaceVal != 1        
+    if ((!prevMove || prevMove.MoveType != "Bet")){
+        return betFaceVal != 1    
     }
-    let prevFaceVal = prevMove.FaceVal
-    let prevNumDice = prevMove.NumDice
+    
+    let prevFaceVal = prevMove.Value.FaceVal
+    let prevNumDice = prevMove.Value.NumDice
     // if (!(prevFaceVal && prevNumDice)) {
     //     return true
     // }

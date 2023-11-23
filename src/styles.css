@@ -6,8 +6,6 @@ body {
 
 .hands {
   counter-reset: matching_dice;
-  border: 1px solid red;
-  flex: 50%;
   width: fit-content;
 }
 .hands.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
@@ -38,6 +36,10 @@ body {
 .hands.selected.six :not(.unknown) .diceFace.one:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
+}
+
+.current_player .hand {
+  background-color: gold;
 }
 
 .hand {
@@ -167,22 +169,56 @@ body {
 
 .game_area {
   margin: 0;
-  border: 1px solid black;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
+  align-items: start;
   width: 100%;
 }
 .game_area .action_display {
-  flex: 50%;
+  width: 50%;
 }
 .game_area .action_display .bet_history {
   max-height: 75vh;
   overflow-y: auto;
 }
+.game_area .game_info {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  align-items: center;
+}
+.game_area .game_info h4 {
+  font-weight: 400;
+  font-size: 1.5em;
+}
+.game_area .game_info h4 .player_name {
+  font-weight: 600;
+}
+.game_area .hand_display {
+  display: flex;
+  margin: 0.5em;
+}
+.game_area .hand_display .hands, .game_area .hand_display .player_names {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.game_area .hand_display .hands .hand, .game_area .hand_display .player_names .hand {
+  margin: 0.5em;
+}
+.game_area .hand_display .hands p, .game_area .hand_display .player_names p {
+  font-size: 1.5em;
+}
+.game_area .hand_display .hands p .player_name, .game_area .hand_display .player_names p .player_name {
+  font-weight: 600;
+}
+.game_area .hand_display .hands p.current_player, .game_area .hand_display .player_names p.current_player {
+  font-weight: 600;
+  font-size: 1.7em;
+  text-shadow: 1px 1px 5px rgb(255, 241, 160);
+}
 
 .my_actions {
-  border: 1px solid black;
   display: flex;
   align-items: stretch;
   flex-direction: column;
@@ -196,6 +232,9 @@ body {
   color: lightblue;
 }
 .my_actions button:disabled {
+  background-color: grey;
+}
+.my_actions button:disabled.my_turn {
   background-color: rgb(98, 133, 98);
 }
 
@@ -229,6 +268,19 @@ body {
 .action .action_content {
   display: flex;
   align-items: center;
+}
+.bet .action_content button,
+.action .action_content button {
+  height: 2em;
+  font-size: 1.5em;
+  border-radius: 0.2em;
+  background-color: rgb(128, 219, 92);
+  color: darkslategrey;
+  margin-right: 1em;
+}
+.bet .action_content button.showing_previous,
+.action .action_content button.showing_previous {
+  background-color: aquamarine;
 }
 .bet .bet_multiplier,
 .action .bet_multiplier {

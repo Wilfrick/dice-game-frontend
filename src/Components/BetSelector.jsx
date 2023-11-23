@@ -2,9 +2,9 @@ import Hand from "./Hand"
 import PropTypes from 'prop-types'
 
 
-const BetSelector = ({ selectedIndex, setSelectedIndex, betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue }) => {
+const BetSelector = ({ selectedIndex, setSelectedIndex, betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, isMyTurn}) => {
     return (
-        <div className={`bet ${selectedIndex} selected`}>
+        <div className={`bet ${selectedIndex} selected ${isMyTurn ? " current_player": ""}`}>
             <div className="bet_multiplier"><input type="number" name="rank" value={betRankBoxValue} onChange={event => setBetRankBoxValue(Number(event.target.value) ?? 0)} />x</div>
             <Hand values={["one", "two", "three", "four", "five", "six"]} setSelectedIndex={setSelectedIndex} setCurrentHoveredValue={setCurrentHoveredValue}></Hand>
         </div>
