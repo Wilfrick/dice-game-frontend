@@ -21,7 +21,8 @@ export function registerWsCallback(stateDictionary) {
 
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
-    allCurrentHands, setAllCurrentHands, setBetRankBoxValue, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate }) {
+    allCurrentHands, setAllCurrentHands, setBetRankBoxValue, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate, setRoundRevealBet,
+    setShowingPreviousHand }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
@@ -77,6 +78,8 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
         case "PlayerHandsContents":
             console.log(parsedMessage.Contents)
             setRoundRevealHands(parsedMessage.Contents.PlayerHands.map(playerHand => playerHand.map(numberToString)))
+            setRoundRevealBet(parsedMessage.Contents.FinalBet)
+            setShowingPreviousHand(true)
             break
         case "Lobby Join Accepted":
             setLobbyPlayerCount(parsedMessage.Contents.NumPlayers)

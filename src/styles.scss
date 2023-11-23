@@ -221,7 +221,7 @@ body {
     // border: 1px solid black;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     width: 100%;
 
     // width: fit-content;
@@ -239,6 +239,7 @@ body {
     .game_info {
         display: flex;
         flex-direction: column;
+        
         margin: 0 auto;
         // justify-content: space-bet;
         align-items: center;
@@ -343,6 +344,17 @@ body {
     .action_content {
         display: flex;
         align-items: center;
+        button {
+            height: 2em;
+            font-size: 1.5em;
+            border-radius: 0.2em;
+            background-color: rgb(128, 219, 92);
+            color: darkslategrey;
+            margin-right: 1em;
+            &.showing_previous {
+                background-color: aquamarine;
+            }
+        }
     }
 
     .bet_multiplier {

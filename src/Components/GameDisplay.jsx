@@ -8,13 +8,13 @@ import validRelativePreviousBet from '../Utils/validRelativePreviousBet';
 import PlayerAction from './PlayerAction';
 import { numberToString, stringToNumber } from '../Utils/numberParser';
 const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredValue, playerClientIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
-    betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands}}) =>
+    betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand}}) =>
 {
     
     allCurrentHands[playerClientIndex] = currentPlayerHand
 
     let isMyTurn = (playerClientIndex == currentTurn)
-    let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade.Value))
+    let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade))
     let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
     let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
     let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
@@ -24,17 +24,32 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
             <div className="game_info">
             <h4> It is currently <span className='player_name'>Player {currentTurn}'s </span> turn</h4>
             
-            <div className="hand_display">
+            {!showingPreviousHand ? <div className="hand_display">
                 <div className={`hands${currentHoveredValue ? " " + currentHoveredValue : ""} selected`}>
            
-            
+                
                 {allCurrentHands.map(
                     (hand, i) => <LabelledHand values={hand} key={i} isCurrentPlayer={currentTurn==i}></LabelledHand>
                 )}
                 </div>
                     <div className="player_names">{allCurrentHands.map((_, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}> Player < span className="player_name">{i}</span> </p>)}
                 </div>
+              
             </div>
+          : <><h2>Last Round Hands</h2>
+          <div className="hand_display">
+                <div className={`hands ${numberToString(roundRevealBet.Value.FaceVal)} selected`}>
+           
+                
+                {roundRevealHands.map(
+                    (hand, i) => <LabelledHand values={hand} key={i} isCurrentPlayer={currentTurn==i}></LabelledHand>
+                )}
+                </div>
+                    <div className="player_names">{roundRevealHands.map((_, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}> Player < span className="player_name">{i}</span> </p>)}
+                </div>
+              
+            </div>
+            </>} 
             <h4>You are player: {playerClientIndex}</h4>
             </div>
           {/* <div className={`hands${lastBetRankMade ? " " + numberToString(lastBetRankMade) : ""} selected`}> 
@@ -53,7 +68,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
             </div>
             <div className="bet_history">
               {movesMade.map(
-                (move, i) => <PlayerAction MoveMade={move.MoveMade} PlayerIndex={move.PlayerIndex} key={i} />
+                (move, i) => <PlayerAction MoveMade={move.MoveMade} PlayerIndex={move.PlayerIndex} key={i} showingPreviousHand={showingPreviousHand} setShowingPreviousHand={setShowingPreviousHand}/>
               )}
               {/* <Bet player_identifier="Jim" bet_multiplier={3} value="two" />
               <Bet player_identifier="Alexander the first" bet_multiplier={3} value="three" />
