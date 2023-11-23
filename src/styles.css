@@ -6,7 +6,6 @@ body {
 
 .hands {
   counter-reset: matching_dice;
-  border: 1px solid red;
   width: fit-content;
 }
 .hands.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
@@ -170,7 +169,6 @@ body {
 
 .game_area {
   margin: 0;
-  border: 1px solid black;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -198,7 +196,6 @@ body {
 }
 .game_area .hand_display {
   display: flex;
-  border: 1px solid black;
   margin: 0.5em;
 }
 .game_area .hand_display .hands, .game_area .hand_display .player_names {
@@ -222,7 +219,6 @@ body {
 }
 
 .my_actions {
-  border: 1px solid black;
   display: flex;
   align-items: stretch;
   flex-direction: column;

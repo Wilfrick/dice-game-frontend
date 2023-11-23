@@ -19,7 +19,7 @@ body {
 
 .hands {
     counter-reset: matching_dice;
-    border: 1px solid red;
+    // border: 1px solid red;
     // flex: 50%;
     width: fit-content;
 
@@ -218,7 +218,7 @@ body {
 
 .game_area {
     margin: 0;
-    border: 1px solid black;
+    // border: 1px solid black;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -253,7 +253,7 @@ body {
     }
     .hand_display {
         display: flex;
-        border: 1px solid black;
+        // border: 1px solid black;
         margin: 0.5em;
         .hands, .player_names {
             display: flex;
@@ -281,7 +281,7 @@ body {
 }
 
 .my_actions {
-    border: 1px solid black;
+    // border: 1px solid black;
     display: flex;
     align-items: stretch;
     flex-direction: column;
