@@ -68,7 +68,7 @@ function App() {
     betRankBoxValue, setBetRankBoxValue,
     roundRevealHands, roundRevealBet, 
     setCurrentHoveredValue, 
-    movesMade, roundRevealHands,
+    movesMade,
     showingPreviousHand, setShowingPreviousHand
   }
 
