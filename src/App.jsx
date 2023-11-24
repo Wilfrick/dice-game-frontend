@@ -8,8 +8,8 @@ import Dudo from './Components/Dudo'
 import Calza from './Components/Calza'
 import PlayerAction from './Components/PlayerAction'
 import BetSelector from './Components/BetSelector'
-import { useState } from 'react'
-import { betAttempted } from './Services/Connection'
+import { useState, useEffect } from 'react'
+import { betAttempted, makeConnection } from './Services/Connection'
 import { numberToString, stringToNumber } from './Utils/numberParser'
 import { sendMove, registerWsCallback, sendGameStart } from './Services/Connection'
 import validRelativePreviousBet from './Utils/validRelativePreviousBet'
@@ -52,7 +52,9 @@ function App() {
     showingPreviousHand, setShowingPreviousHand,
     navigate
   }
-  registerWsCallback(wsStateDictionary)
+  useEffect(() => { makeConnection(wsStateDictionary) }, [])
+  
+  // registerWsCallback(wsStateDictionary)
 
 
   // allCurrentHands[playerClientIndex] = currentPlayerHand
