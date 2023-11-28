@@ -8,8 +8,8 @@ import Dudo from './Components/Dudo'
 import Calza from './Components/Calza'
 import PlayerAction from './Components/PlayerAction'
 import BetSelector from './Components/BetSelector'
-import { useState } from 'react'
-import { betAttempted } from './Services/Connection'
+import { useState, useEffect } from 'react'
+import { betAttempted, makeConnection } from './Services/Connection'
 import { numberToString, stringToNumber } from './Utils/numberParser'
 import { sendMove, registerWsCallback, sendGameStart } from './Services/Connection'
 import validRelativePreviousBet from './Utils/validRelativePreviousBet'
@@ -18,6 +18,7 @@ import LandingPage from './Components/LandingPage'
 import LobbyPage from './Components/LobbyPage'
 import GameDisplay from './Components/GameDisplay'
 
+makeConnection()
 function App() {
 
   // const betRankBox = document.querySelector(".bet_multiplier input")
@@ -52,6 +53,8 @@ function App() {
     showingPreviousHand, setShowingPreviousHand,
     navigate
   }
+  // useEffect(() => { makeConnection(wsStateDictionary) }, [])
+  
   registerWsCallback(wsStateDictionary)
 
 
@@ -74,13 +77,12 @@ function App() {
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
-
     <Routes>
       <Route path="/" element={<LandingPage />}></Route>
       <Route path="/lobby/" element={<LobbyPage numPlayers={lobbyPlayerCount} navigate={navigate} LobbyID={lobbyID}/>}></Route>
       <Route path="/game/" element={<GameDisplay gameStateDictionary={gameStateDictionary}/>}>
       </Route>
-    </Routes>
+    </Routes>  
   )
 }
 
