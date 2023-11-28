@@ -77,13 +77,12 @@ function App() {
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
   return (
-
     <Routes>
       <Route path="/" element={<LandingPage />}></Route>
       <Route path="/lobby/" element={<LobbyPage numPlayers={lobbyPlayerCount} navigate={navigate} LobbyID={lobbyID}/>}></Route>
       <Route path="/game/" element={<GameDisplay gameStateDictionary={gameStateDictionary}/>}>
       </Route>
-    </Routes>
+    </Routes>  
   )
 }
 

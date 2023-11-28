@@ -7,6 +7,7 @@ import { startTransition } from "react";
 // console.log(`ws://${config.WebsocketUrl}:${config.WebsocketPort}/ws`)
 let address = `ws://${config.WebsocketUrl}:${config.WebsocketPort}/ws`
 let ws
+
 // const ws = new WebSocket("ws://aw808.user.srcf.net:32156/ws");
 // const ws = new WebSocket("ws://localhost:32156/ws");
 export function makeConnection() { 
@@ -17,7 +18,7 @@ export function makeConnection() {
 
     let clientID = sessionStorage.getItem("clientID")
         clientID = clientID ?? " "
-    console.log(`ClientID ${clientID}`)
+    console.log(`ClientID: ${clientID}`)
     
     ws.onopen = (e) => { 
         console.log(`event readystate: ${e.target?.readyState}`);
@@ -26,12 +27,19 @@ export function makeConnection() {
         // setTimeout(()=>e.target.send(clientID), 250)
         e.target.send(clientID)
         console.log('clientID sent');
+        const first_message_handler = (event) => {
+            console.log(`Received data: ${event.data}`);
+            sessionStorage.setItem("clientID", event.data)
+            // registerWsCallback(stateDictionary)
+            event.target.removeEventListener("message", first_message_handler)
+        }
+        e.target.addEventListener('message', first_message_handler)
     }
-    ws.onmessage = (event) => { 
-        console.log(`Received data: ${event.data}`);
-        sessionStorage.setItem("clientID", event.data)
-        // registerWsCallback(stateDictionary)
-    }
+    // ws.onmessage = (event) => { 
+    //     console.log(`Received data: ${event.data}`);
+    //     sessionStorage.setItem("clientID", event.data)
+    //     // registerWsCallback(stateDictionary)
+    // }
 }
 
 
