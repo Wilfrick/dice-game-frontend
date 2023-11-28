@@ -102,7 +102,7 @@ export function registerWsCallback(stateDictionary) {
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
     allCurrentHands, setAllCurrentHands, setBetRankBoxValue, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate, setRoundRevealBet,
-    setShowingPreviousHand }) {
+    setShowingPreviousHand, setIsPalacifoRound }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
@@ -177,6 +177,10 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             console.log("Your game has started")
             navigate("/game/")
             break
+        case "PalacifoRound":
+            console.log(`Palacifo Round: ${parsedMessage.Contents}`)
+            setIsPalacifoRound(parsedMessage.Contents)
+
         // case "Lobby Created":
         //     let lobbyID = parsedMessage.Contents.LobbyID
         //     setCurrentLobbyID(lobbyID)
