@@ -18,6 +18,7 @@ import LandingPage from './Components/LandingPage'
 import LobbyPage from './Components/LobbyPage'
 import GameDisplay from './Components/GameDisplay'
 
+makeConnection()
 function App() {
 
   // const betRankBox = document.querySelector(".bet_multiplier input")
@@ -52,9 +53,9 @@ function App() {
     showingPreviousHand, setShowingPreviousHand,
     navigate
   }
-  useEffect(() => { makeConnection(wsStateDictionary) }, [])
+  // useEffect(() => { makeConnection(wsStateDictionary) }, [])
   
-  // registerWsCallback(wsStateDictionary)
+  registerWsCallback(wsStateDictionary)
 
 
   // allCurrentHands[playerClientIndex] = currentPlayerHand

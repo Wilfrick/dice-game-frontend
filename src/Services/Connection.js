@@ -9,7 +9,7 @@ let address = `ws://${config.WebsocketUrl}:${config.WebsocketPort}/ws`
 let ws
 // const ws = new WebSocket("ws://aw808.user.srcf.net:32156/ws");
 // const ws = new WebSocket("ws://localhost:32156/ws");
-export function makeConnection(stateDictionary) { 
+export function makeConnection() { 
     console.log('Called makeConnection');
     ws = new WebSocket(address);
     console.log(`ws: ${ws}`);
@@ -23,14 +23,14 @@ export function makeConnection(stateDictionary) {
         console.log(`event readystate: ${e.target?.readyState}`);
         console.log(`ws readystate: ${ws?.readyState}`);
         console.log(`sending clientID: ${clientID}`);
-        // setTimeout(()=>e.target.send(clientID), 0)
+        // setTimeout(()=>e.target.send(clientID), 250)
         e.target.send(clientID)
         console.log('clientID sent');
     }
     ws.onmessage = (event) => { 
         console.log(`Received data: ${event.data}`);
         sessionStorage.setItem("clientID", event.data)
-        registerWsCallback(stateDictionary)
+        // registerWsCallback(stateDictionary)
     }
 }
 
