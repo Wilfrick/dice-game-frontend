@@ -23,19 +23,37 @@ body {
     // flex: 50%;
     width: fit-content;
 
+    &:not(.palacifo) {
+        &.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
+            border: 4px solid white;
+            counter-increment: matching_dice;
+        }
 
-    &.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
-        border: 4px solid white;
-        counter-increment: matching_dice;
+        @each $dice_face_value in $normal_dice_face_values {
+            &.selected.#{$dice_face_value} :not(.unknown) {
+
+                .diceFace.#{$dice_face_value}:not(.unknown),
+                .diceFace.one:not(.unknown) {
+                    border: 4px solid white;
+                    counter-increment: matching_dice;
+                }
+            }
+        }
     }
 
-    @each $dice_face_value in $normal_dice_face_values {
-        &.selected.#{$dice_face_value} :not(.unknown) {
+    &.palacifo {
+        // &.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
+        //     border: 4px solid white;
+        //     counter-increment: matching_dice;
+        // }
 
-            .diceFace.#{$dice_face_value}:not(.unknown),
-            .diceFace.one:not(.unknown) {
-                border: 4px solid white;
-                counter-increment: matching_dice;
+        @each $dice_face_value in $all_dice_face_values {
+            &.selected.#{$dice_face_value} :not(.unknown) {
+
+                .diceFace.#{$dice_face_value}:not(.unknown) {
+                    border: 4px solid white;
+                    counter-increment: matching_dice;
+                }
             }
         }
     }
