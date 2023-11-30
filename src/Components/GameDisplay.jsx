@@ -14,7 +14,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
     allCurrentHands[playerClientIndex] = currentPlayerHand
 
     let isMyTurn = (playerClientIndex == currentTurn)
-    let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade))
+    let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade, isPalacifoRound, currentPlayerHand.length))
     let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
     let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
     let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
