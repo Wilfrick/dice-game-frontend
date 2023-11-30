@@ -64,7 +64,17 @@ body {
 
 }
 
+.palacifo {
+    .hand {
+        border: 5px solid darkorchid;
+    }
+    .can_change_rank {
+        .hand {
+            border: 5px solid purple;
+        }
+    }
 
+}
 
 .diceFace {
     border: 4px solid grey;

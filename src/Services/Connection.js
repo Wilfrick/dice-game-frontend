@@ -180,7 +180,7 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
         case "PalacifoRound":
             console.log(`Palacifo Round: ${parsedMessage.Contents}`)
             setIsPalacifoRound(parsedMessage.Contents)
-
+            break
         // case "Lobby Created":
         //     let lobbyID = parsedMessage.Contents.LobbyID
         //     setCurrentLobbyID(lobbyID)

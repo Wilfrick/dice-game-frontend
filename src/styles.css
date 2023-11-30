@@ -54,6 +54,13 @@ body {
   border-color: yellow;
 }
 
+.palacifo .hand {
+  border: 5px solid darkorchid;
+}
+.palacifo .can_change_rank .hand {
+  border: 5px solid purple;
+}
+
 .diceFace {
   border: 4px solid grey;
   margin: 3px;
