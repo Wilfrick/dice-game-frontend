@@ -102,7 +102,7 @@ export function registerWsCallback(stateDictionary) {
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
     allCurrentHands, setAllCurrentHands, setBetRankBoxValue, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate, setRoundRevealBet,
-    setShowingPreviousHand, setIsPalacifoRound }) {
+    setShowingPreviousHand, setIsPalacifoRound, setHaveILost, setWhoWon}) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
@@ -181,6 +181,26 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             console.log(`Palacifo Round: ${parsedMessage.Contents}`)
             setIsPalacifoRound(parsedMessage.Contents)
             break
+        case "GameResult":
+            console.log('Processing Game Result');
+            console.dir(parsedMessage)
+            console.dir({res_val: "lose", cpi: clientPlayerIndex})
+            let game_result_elt = document.querySelector("dialog") // new way to proprogate data. Probably will be the source of some bugs going forward but interesting
+            game_result_elt?.showModal()
+            
+            // Thinking here
+            // Two types of messages that we recieve, win/loss
+            // Come with a target player
+            // First check if loss is me
+            if (parsedMessage.Contents.Result == "lose" && parsedMessage.Contents.PlayerIndex == clientPlayerIndex) {                
+                setHaveILost(true)
+                break
+            }
+            if (parsedMessage.Contents.Result == "win") {
+                let winner = parsedMessage.Contents.PlayerIndex
+                setWhoWon(winner)
+                break
+            }
         // case "Lobby Created":
         //     let lobbyID = parsedMessage.Contents.LobbyID
         //     setCurrentLobbyID(lobbyID)

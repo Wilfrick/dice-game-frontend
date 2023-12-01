@@ -25,7 +25,7 @@ function App() {
   const [selectedIndex, setSelectedIndex] = useState(undefined) // should really be selectedValue
   const [currentPlayerHand, setCurrentPlayerHand] = useState([])
   const [movesMade, setMovesMade] = useState([])
-  const [playerClientIndex, setClientPlayerIndex] = useState(undefined)
+  const [clientPlayerIndex, setClientPlayerIndex] = useState(undefined)
   const [allCurrentHands, setAllCurrentHands] = useState([])
   const [currentTurn, setCurrentTurn] = useState(undefined)
   const [roundRevealHands, setRoundRevealHands] = useState([])
@@ -36,6 +36,8 @@ function App() {
   const [lobbyID, setLobbyID] = useState(undefined)
   const [showingPreviousHand, setShowingPreviousHand] = useState(false)
   const [isPalacifoRound, setIsPalacifoRound] = useState(false) // could be undefined, but false is alright
+  const [haveILost, setHaveILost] = useState(undefined)
+  const [whoWon, setWhoWon] = useState(undefined)
   const navigate = useNavigate()
   
 
@@ -43,7 +45,7 @@ function App() {
     selectedIndex, setSelectedIndex,
     currentPlayerHand, setCurrentPlayerHand,
     movesMade, setMovesMade,
-    playerClientIndex, setClientPlayerIndex,
+    clientPlayerIndex, setClientPlayerIndex,
     allCurrentHands, setAllCurrentHands,
     currentTurn, setCurrentTurn,
     roundRevealHands, setRoundRevealHands,
@@ -53,6 +55,8 @@ function App() {
     lobbyID, setLobbyID,
     showingPreviousHand, setShowingPreviousHand,
     isPalacifoRound, setIsPalacifoRound,
+    haveILost, setHaveILost,
+    whoWon, setWhoWon,
     navigate
   }
   // useEffect(() => { makeConnection(wsStateDictionary) }, [])
@@ -69,13 +73,14 @@ function App() {
   // let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
   let gameStateDictionary = {
-    currentPlayerHand, currentHoveredValue, playerClientIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
+    currentPlayerHand, currentHoveredValue, clientPlayerIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
     betRankBoxValue, setBetRankBoxValue,
     roundRevealHands, roundRevealBet, 
     setCurrentHoveredValue, 
     movesMade,
     showingPreviousHand, setShowingPreviousHand,
-    isPalacifoRound
+    isPalacifoRound,
+    haveILost, whoWon,
   }
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);

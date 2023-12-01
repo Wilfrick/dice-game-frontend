@@ -9,7 +9,14 @@ $edge_length: 2em;
 $normal_dice_face_values: "two", "three", "four", "five", "six";
 $all_dice_face_values: "one", "two", "three", "four", "five", "six";
 
-
+dialog::backdrop {
+    background-image: linear-gradient(45deg,
+            magenta,
+            rebeccapurple,
+            dodgerblue,
+            green);
+    opacity: 0.75;
+}
 
 body {
     margin: 0;
