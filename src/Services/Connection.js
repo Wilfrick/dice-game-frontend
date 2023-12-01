@@ -175,6 +175,12 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             break
         case "Game Started":
             console.log("Your game has started")
+            setMovesMade([])
+            // setAllCurrentHands([])
+            setRoundRevealBet(undefined)
+            setRoundRevealHands([])
+            // setClientPlayerIndex(undefined)
+            
             navigate("/game/")
             break
         case "PalacifoRound":
@@ -201,6 +207,10 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
                 setWhoWon(winner)
                 break
             }
+        case "PlayerLocation":
+            console.log("Was told to navigate to location", parsedMessage.Contents)
+            navigate(parsedMessage.Contents)
+            break
         // case "Lobby Created":
         //     let lobbyID = parsedMessage.Contents.LobbyID
         //     setCurrentLobbyID(lobbyID)

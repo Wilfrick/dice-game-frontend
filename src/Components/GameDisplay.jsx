@@ -2,11 +2,12 @@ import PropTypes from 'prop-types'
 import LabelledHand from './LabelledHand';
 import BetSelector from './BetSelector';
 import GameArea from './GameArea';
-import { betAttempted } from '../Services/Connection';
+import { betAttempted, packSendMessage } from '../Services/Connection';
 import { sendMove } from '../Services/Connection';
 import validRelativePreviousBet from '../Utils/validRelativePreviousBet';
 import PlayerAction from './PlayerAction';
 import { numberToString, stringToNumber } from '../Utils/numberParser';
+import { Navigate } from 'react-router-dom';
 const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredValue, clientPlayerIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
     betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand, isPalacifoRound,
   haveILost, whoWon}}) =>
@@ -26,9 +27,15 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
         <dialog>Hello. {haveILost && "You have lost. We'll get 'em next time."} {whoWon !== undefined && `Player ${whoWon} won.${whoWon == clientPlayerIndex ? "That's you!": ""}`}
           <form method='dialog'>
             <button onClick={() => {
-              console.log('Balloons');
-            }}>Close and do stuff</button>
-            <button>Other button</button>
+              console.log('Sending players back to lobby');
+              packSendMessage("ReturnAllToLobby")
+            }}>Send all players to lobby</button>
+            <button onClick= {() => {
+              console.log("Tried to leave and return to main menu")
+              packSendMessage("LeaveGame")
+              // Navigate("/")
+            }}>Leave game and return to main menu</button>
+            
           </form>
         </dialog>
         <button type="button" onClick={() => {
