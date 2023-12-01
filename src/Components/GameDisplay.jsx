@@ -8,13 +8,13 @@ import validRelativePreviousBet from '../Utils/validRelativePreviousBet';
 import PlayerAction from './PlayerAction';
 import { numberToString, stringToNumber } from '../Utils/numberParser';
 const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredValue, playerClientIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
-    betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand}}) =>
+    betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand, isPalacifoRound}}) =>
 {
     
     allCurrentHands[playerClientIndex] = currentPlayerHand
 
     let isMyTurn = (playerClientIndex == currentTurn)
-    let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade))
+    let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade, isPalacifoRound, currentPlayerHand.length))
     let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
     let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
     let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
@@ -22,17 +22,18 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
     return (
         <GameArea>
             <div className="game_info">
+            {isPalacifoRound && <h1> It is a palacifo round!</h1>}
             <h4> It is currently <span className='player_name'>Player {currentTurn}'s </span> turn</h4>
             
             {!showingPreviousHand ? <div className="hand_display">
-                <div className={`hands${currentHoveredValue ? " " + currentHoveredValue : ""} selected`}>
+                <div className={`hands${currentHoveredValue ? " " + currentHoveredValue : ""} selected${isPalacifoRound ? " palacifo":""}`}>
            
                 
                 {allCurrentHands.map(
                     (hand, i) => <LabelledHand values={hand} key={i} isCurrentPlayer={currentTurn==i}></LabelledHand>
                 )}
                 </div>
-                    <div className="player_names">{allCurrentHands.map((_, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}> Player < span className="player_name">{i}</span> </p>)}
+                    <div className="player_names">{allCurrentHands.map((hand, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}>Player < span className="player_name">{i}</span> {isPalacifoRound && (hand.length == 1) ? "*": ""}</p>)}
                 </div>
               
             </div>
@@ -45,7 +46,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
                     (hand, i) => <LabelledHand values={hand} key={i} isCurrentPlayer={currentTurn==i}></LabelledHand>
                 )}
                 </div>
-                    <div className="player_names">{roundRevealHands.map((_, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}> Player < span className="player_name">{i}</span> </p>)}
+                    <div className="player_names">{roundRevealHands.map((_, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}>Player < span className="player_name">{i}</span> </p>)}
                 </div>
               
             </div>
@@ -64,7 +65,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
                             betRankBoxValue={betRankBoxValue} setBetRankBoxValue={setBetRankBoxValue} setCurrentHoveredValue={setCurrentHoveredValue} isMyTurn={isMyTurn}/>
               <button className={`Make_Bet ${isMyTurn ? " my_turn": ""}`} type="button" onClick={() => betAttempted(betRankBoxValue, selectedIndex)} disabled={!(isMyTurn && canMakeBet)}>Make Bet</button>
                         <button className={`Dudo ${isMyTurn ? " my_turn": ""}`} type="button" onClick={() => sendMove("Dudo")} disabled={!(isMyTurn && canDudo)}>Dudo</button>
-                        <button className={`Calza ${isMyTurn ? " my_turn": ""}`} type="button" onClick={() => sendMove("Calza")} disabled={!(isMyTurn && canCalza)}>Calza</button>
+                        <button className={`Calza ${isMyTurn && !isPalacifoRound ? " my_turn": ""}`} type="button" onClick={() => sendMove("Calza")} disabled={!(isMyTurn && canCalza && !isPalacifoRound)}>Calza</button>
             </div>
             <div className="bet_history">
               {movesMade.map(

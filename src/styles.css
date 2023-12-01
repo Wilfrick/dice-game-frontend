@@ -8,32 +8,56 @@ body {
   counter-reset: matching_dice;
   width: fit-content;
 }
-.hands.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
+.hands:not(.palacifo).selected.one :not(.unknown) .diceFace.one:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
 }
-.hands.selected.two :not(.unknown) .diceFace.two:not(.unknown),
-.hands.selected.two :not(.unknown) .diceFace.one:not(.unknown) {
+.hands:not(.palacifo).selected.two :not(.unknown) .diceFace.two:not(.unknown),
+.hands:not(.palacifo).selected.two :not(.unknown) .diceFace.one:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
 }
-.hands.selected.three :not(.unknown) .diceFace.three:not(.unknown),
-.hands.selected.three :not(.unknown) .diceFace.one:not(.unknown) {
+.hands:not(.palacifo).selected.three :not(.unknown) .diceFace.three:not(.unknown),
+.hands:not(.palacifo).selected.three :not(.unknown) .diceFace.one:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
 }
-.hands.selected.four :not(.unknown) .diceFace.four:not(.unknown),
-.hands.selected.four :not(.unknown) .diceFace.one:not(.unknown) {
+.hands:not(.palacifo).selected.four :not(.unknown) .diceFace.four:not(.unknown),
+.hands:not(.palacifo).selected.four :not(.unknown) .diceFace.one:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
 }
-.hands.selected.five :not(.unknown) .diceFace.five:not(.unknown),
-.hands.selected.five :not(.unknown) .diceFace.one:not(.unknown) {
+.hands:not(.palacifo).selected.five :not(.unknown) .diceFace.five:not(.unknown),
+.hands:not(.palacifo).selected.five :not(.unknown) .diceFace.one:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
 }
-.hands.selected.six :not(.unknown) .diceFace.six:not(.unknown),
-.hands.selected.six :not(.unknown) .diceFace.one:not(.unknown) {
+.hands:not(.palacifo).selected.six :not(.unknown) .diceFace.six:not(.unknown),
+.hands:not(.palacifo).selected.six :not(.unknown) .diceFace.one:not(.unknown) {
+  border: 4px solid white;
+  counter-increment: matching_dice;
+}
+.hands.palacifo.selected.one :not(.unknown) .diceFace.one:not(.unknown) {
+  border: 4px solid white;
+  counter-increment: matching_dice;
+}
+.hands.palacifo.selected.two :not(.unknown) .diceFace.two:not(.unknown) {
+  border: 4px solid white;
+  counter-increment: matching_dice;
+}
+.hands.palacifo.selected.three :not(.unknown) .diceFace.three:not(.unknown) {
+  border: 4px solid white;
+  counter-increment: matching_dice;
+}
+.hands.palacifo.selected.four :not(.unknown) .diceFace.four:not(.unknown) {
+  border: 4px solid white;
+  counter-increment: matching_dice;
+}
+.hands.palacifo.selected.five :not(.unknown) .diceFace.five:not(.unknown) {
+  border: 4px solid white;
+  counter-increment: matching_dice;
+}
+.hands.palacifo.selected.six :not(.unknown) .diceFace.six:not(.unknown) {
   border: 4px solid white;
   counter-increment: matching_dice;
 }
@@ -52,6 +76,13 @@ body {
 }
 .hand:hover {
   border-color: yellow;
+}
+
+.palacifo .hand {
+  border: 5px solid darkorchid;
+}
+.palacifo .can_change_rank .hand {
+  border: 5px solid purple;
 }
 
 .diceFace {

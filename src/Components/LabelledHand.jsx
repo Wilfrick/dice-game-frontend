@@ -4,7 +4,7 @@ import Hand from './Hand'
 const LabelledHand = ({ values, isCurrentPlayer }) => {
     
     return (
-        <div className={`labelled_hand${isCurrentPlayer ? " current_player": " "}`}>
+        <div className={`labelled_hand${isCurrentPlayer ? " current_player": " "}${ values.length == 1 ? " can_change_rank": ""}`}>
             <Hand values={values}/>
             {/* Player: {playerName} */}
         </div>

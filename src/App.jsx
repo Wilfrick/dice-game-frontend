@@ -35,6 +35,7 @@ function App() {
   const [lobbyPlayerCount, setLobbyPlayerCount] = useState(undefined) // will probably be calculated from some array of lobby players in the future
   const [lobbyID, setLobbyID] = useState(undefined)
   const [showingPreviousHand, setShowingPreviousHand] = useState(false)
+  const [isPalacifoRound, setIsPalacifoRound] = useState(false) // could be undefined, but false is alright
   const navigate = useNavigate()
   
 
@@ -51,6 +52,7 @@ function App() {
     lobbyPlayerCount, setLobbyPlayerCount,
     lobbyID, setLobbyID,
     showingPreviousHand, setShowingPreviousHand,
+    isPalacifoRound, setIsPalacifoRound,
     navigate
   }
   // useEffect(() => { makeConnection(wsStateDictionary) }, [])
@@ -72,7 +74,8 @@ function App() {
     roundRevealHands, roundRevealBet, 
     setCurrentHoveredValue, 
     movesMade,
-    showingPreviousHand, setShowingPreviousHand
+    showingPreviousHand, setShowingPreviousHand,
+    isPalacifoRound
   }
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
