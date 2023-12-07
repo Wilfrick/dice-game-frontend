@@ -2,25 +2,47 @@ import PropTypes from 'prop-types'
 import LabelledHand from './LabelledHand';
 import BetSelector from './BetSelector';
 import GameArea from './GameArea';
-import { betAttempted } from '../Services/Connection';
+import { betAttempted, packSendMessage } from '../Services/Connection';
 import { sendMove } from '../Services/Connection';
 import validRelativePreviousBet from '../Utils/validRelativePreviousBet';
 import PlayerAction from './PlayerAction';
 import { numberToString, stringToNumber } from '../Utils/numberParser';
-const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredValue, playerClientIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
-    betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand, isPalacifoRound}}) =>
+import { Navigate } from 'react-router-dom';
+const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredValue, clientPlayerIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
+    betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand, isPalacifoRound,
+  haveILost, whoWon}}) =>
 {
     
-    allCurrentHands[playerClientIndex] = currentPlayerHand
+    allCurrentHands[clientPlayerIndex] = currentPlayerHand
 
-    let isMyTurn = (playerClientIndex == currentTurn)
+    let isMyTurn = (clientPlayerIndex == currentTurn)
     let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade, isPalacifoRound, currentPlayerHand.length))
     let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
     let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
     let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
 
+  
     return (
-        <GameArea>
+      <GameArea>
+        <dialog>Hello. {haveILost && "You have lost. We'll get 'em next time."} {whoWon !== undefined && `Player ${whoWon} won.${whoWon == clientPlayerIndex ? "That's you!": ""}`}
+          <form method='dialog'>
+            <button onClick={() => {
+              console.log('Sending players back to lobby');
+              packSendMessage("ReturnAllToLobby")
+            }}>Send all players to lobby</button>
+            <button onClick= {() => {
+              console.log("Tried to leave and return to main menu")
+              packSendMessage("LeaveGame")
+              // Navigate("/")
+            }}>Leave game and return to main menu</button>
+            
+          </form>
+        </dialog>
+        <button type="button" onClick={() => {
+          let dialog_elt = document.querySelector("dialog")
+          dialog_elt.showModal()
+          dialog_elt.onclick = () => {dialog_elt.close() } // could include for closing on click
+        }}>Show modal</button>
             <div className="game_info">
             {isPalacifoRound && <h1> It is a palacifo round!</h1>}
             <h4> It is currently <span className='player_name'>Player {currentTurn}'s </span> turn</h4>
@@ -39,7 +61,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
             </div>
           : <><h2>Last Round Hands</h2>
           <div className="hand_display">
-                <div className={`hands ${numberToString(roundRevealBet.Value.FaceVal)} selected`}>
+                <div className={`hands ${numberToString(roundRevealBet?.Value?.FaceVal)} selected`}>
            
                 
                 {roundRevealHands.map(
@@ -51,7 +73,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
               
             </div>
             </>} 
-            <h4>You are player: {playerClientIndex}</h4>
+            <h4>You are player: {clientPlayerIndex}</h4>
             </div>
           {/* <div className={`hands${lastBetRankMade ? " " + numberToString(lastBetRankMade) : ""} selected`}> 
             <p>Starting old hands</p>
