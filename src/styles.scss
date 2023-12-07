@@ -456,7 +456,7 @@ body {
             border-radius: 0.2em;
             background-color: darkgreen;
             color: lightblue;
-            &#CreateLobbyButton:hover {
+            &.CreateLobbyButton:hover {
                 // text-shadow: gold;
                 text-shadow: 1px 1px 5px #ffcc00;
             }

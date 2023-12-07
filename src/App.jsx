@@ -88,6 +88,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingPage />}></Route>
       <Route path="/lobby/" element={<LobbyPage numPlayers={lobbyPlayerCount} navigate={navigate} LobbyID={lobbyID}/>}></Route>
+      <Route path="/quickplay/" element={<LobbyPage numPlayers={lobbyPlayerCount} navigate={navigate} LobbyID={"Quickplay"} isQuickplay={true}/>}></Route>
       <Route path="/game/" element={<GameDisplay gameStateDictionary={gameStateDictionary}/>}>
       </Route>
     </Routes>  

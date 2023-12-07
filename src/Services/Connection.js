@@ -164,7 +164,7 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
         case "Lobby Join Accepted":
             setLobbyPlayerCount(parsedMessage.Contents.NumPlayers)
             setLobbyID(parsedMessage.Contents.LobbyID)
-            navigate("/lobby")
+            // navigate("/lobby")
             break
         case "Lobby Join Failed":
             console.log("You failed to join the target lobby")

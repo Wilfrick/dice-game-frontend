@@ -61,7 +61,7 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
             </div>
           : <><h2>Last Round Hands</h2>
           <div className="hand_display">
-                <div className={`hands ${numberToString(roundRevealBet.Value.FaceVal)} selected`}>
+                <div className={`hands ${numberToString(roundRevealBet?.Value?.FaceVal)} selected`}>
            
                 
                 {roundRevealHands.map(

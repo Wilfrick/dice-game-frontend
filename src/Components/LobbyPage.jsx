@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { packSendMessage } from '../Services/Connection'
 
-const LobbyPage = ({ numPlayers, navigate, LobbyID }) => {
+const LobbyPage = ({ numPlayers, navigate, LobbyID, isQuickplay }) => {
     // let LobbyID = "abcdefghiklmnopqrstuvwxyz"
     return (
         <div className="landing_page">
@@ -17,13 +17,14 @@ const LobbyPage = ({ numPlayers, navigate, LobbyID }) => {
                 navigate("/")
             }}>Leave Lobby</button>
             
-          <button type="button" onClick={() => { packSendMessage("Start Game", {GameID: LobbyID}); console.log("StartGameButton") }}>Start Game</button>
+          {!isQuickplay && <button type="button" onClick={() => { packSendMessage("Start Game", {GameID: LobbyID}); console.log("StartGameButton") }}>Start Game</button>}
         </div>
         </div>
     )
 }
 LobbyPage.propTypes = {
     numPlayers: PropTypes.number,
-    navigate: PropTypes.func
+    navigate: PropTypes.func,
+    isQuickplay: PropTypes.bool
 }
 export default LobbyPage

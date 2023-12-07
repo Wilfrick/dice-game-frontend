@@ -395,7 +395,7 @@ body {
   background-color: darkgreen;
   color: lightblue;
 }
-.landing_page .landing_page_action_container button#CreateLobbyButton:hover {
+.landing_page .landing_page_action_container button.CreateLobbyButton:hover {
   text-shadow: 1px 1px 5px #ffcc00;
 }
 .landing_page .landing_page_action_container button#JoinLobbyButton:hover {
