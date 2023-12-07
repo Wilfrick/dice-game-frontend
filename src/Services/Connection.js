@@ -215,8 +215,10 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
         //     let lobbyID = parsedMessage.Contents.LobbyID
         //     setCurrentLobbyID(lobbyID)
         case "PlayerLeft":
-            console.log(`Player ${parsedMessage.Contents} left the game`)
-            setAllCurrentHands(allCurrentHands.splice(parsedMessage.contents,1))
+            let playerWhoLeftIndex = parsedMessage.Contents
+            console.log(`Player ${playerWhoLeftIndex} left the game`)
+            allCurrentHands.splice(playerWhoLeftIndex, 1)
+            setAllCurrentHands(allCurrentHands)
             break
         default:
             console.log(`Received unknown message:`); // we shouldn't be here
