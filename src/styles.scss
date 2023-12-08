@@ -299,6 +299,11 @@ body {
             .hand {
                 margin: .5em;
             }
+            .disconnected {
+                .hand{
+                    background-color: grey;
+                }
+            }
             p {
                 // font-weight: 400;
                 font-size: 1.5em;
@@ -309,6 +314,9 @@ body {
                     font-weight: 600;
                     font-size: 1.7em;    
                     text-shadow: 1px 1px 5px rgb(255, 241, 160);                
+                }
+                &.disconnected {
+                    text-decoration: line-through;
                 }
             }
         }

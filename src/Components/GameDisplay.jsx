@@ -10,21 +10,21 @@ import { numberToString, stringToNumber } from '../Utils/numberParser';
 import { Navigate } from 'react-router-dom';
 const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredValue, clientPlayerIndex, currentTurn, allCurrentHands, selectedIndex, setSelectedIndex, 
     betRankBoxValue, setBetRankBoxValue, setCurrentHoveredValue, movesMade, roundRevealHands, roundRevealBet, showingPreviousHand, setShowingPreviousHand, isPalacifoRound,
-  haveILost, whoWon}}) =>
+  haveILost, whoWon, disconnectedPlayers}}) =>
 {
     
     allCurrentHands[clientPlayerIndex] = currentPlayerHand
 
     let isMyTurn = (clientPlayerIndex == currentTurn)
     let canMakeBet = betRankBoxValue && selectedIndex && (validRelativePreviousBet(betRankBoxValue, selectedIndex, movesMade[0]?.MoveMade, isPalacifoRound, currentPlayerHand.length))
-    let canDudo = movesMade[0]?.MoveMade.MoveType == "Bet"
+    let canDudo = movesMade[0]?.MoveMade.MoveType in { "Bet": 0, "LEFT": 0 }
     let canCalza = (allCurrentHands.filter(x => x.length).length > 2) && canDudo
-    let lastBetRankMade = movesMade[1]?.MoveMade.Value.FaceVal
+    let lastBetRankMade = movesMade[1]?.MoveMade.Value?.FaceVal
 
   
     return (
       <GameArea>
-        <dialog>Hello. {haveILost && "You have lost. We'll get 'em next time."} {whoWon !== undefined && `Player ${whoWon} won.${whoWon == clientPlayerIndex ? "That's you!": ""}`}
+        <dialog>{haveILost && "You have lost. We'll get 'em next time."} {whoWon !== undefined && `Player ${whoWon} won.${whoWon == clientPlayerIndex ? "That's you!": ""}`}
           <form method='dialog'>
             <button onClick={() => {
               console.log('Sending players back to lobby');
@@ -52,10 +52,10 @@ const GameDisplay = ({gameStateDictionary : {currentPlayerHand, currentHoveredVa
            
                 
                 {allCurrentHands.map(
-                    (hand, i) => <LabelledHand values={hand} key={i} isCurrentPlayer={currentTurn==i}></LabelledHand>
+                    (hand, i) => <LabelledHand values={hand} key={i} isCurrentPlayer={currentTurn==i} isDisconnected={disconnectedPlayers.includes(i)}></LabelledHand>
                 )}
                 </div>
-                    <div className="player_names">{allCurrentHands.map((hand, i) => <p className={`${currentTurn == i ? "current_player" : ""}`}>Player < span className="player_name">{i}</span> {isPalacifoRound && (hand.length == 1) ? "*": ""}</p>)}
+                    <div className="player_names">{allCurrentHands.map((hand, i) => <p className={`${currentTurn == i ? "current_player" : ""} ${disconnectedPlayers.includes(i) ? " disconnected": ""}`}>Player < span className="player_name">{i}</span> {isPalacifoRound && (hand.length == 1) ? "*": ""}</p>)}
                 </div>
               
             </div>

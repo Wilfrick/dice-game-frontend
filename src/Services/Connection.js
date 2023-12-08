@@ -102,13 +102,14 @@ export function registerWsCallback(stateDictionary) {
 
 function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand, movesMade, setMovesMade, clientPlayerIndex, setClientPlayerIndex,
     allCurrentHands, setAllCurrentHands, setBetRankBoxValue, setCurrentTurn, roundRevealHands, setRoundRevealHands, LobbyPlayerCount, setLobbyPlayerCount, setLobbyID, navigate, setRoundRevealBet,
-    setShowingPreviousHand, setIsPalacifoRound, setHaveILost, setWhoWon}) {
+    setShowingPreviousHand, setIsPalacifoRound, setHaveILost, setWhoWon, disconnectedPlayers, setDisconnectedPlayers }) {
     switch (parsedMessage?.TypeDescriptor) {
         case "SinglePlayerHandContents":
             let localPlayerHand = parsedMessage.Contents.PlayerHand.map(numberToString)
             setCurrentPlayerHand(localPlayerHand)
             setClientPlayerIndex(parsedMessage.Contents.PlayerIndex)
             setBetRankBoxValue(1)
+            setDisconnectedPlayers([])
             // allCurrentHands[parsedMessage.Contents.PlayerIndex] = localPlayerHand
             // setAllCurrentHands(allCurrentHands)
             // setAllCurrentHands([localPlayerHand, ...(allCurrentHands.slice(1))])
@@ -179,6 +180,9 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             // setAllCurrentHands([])
             setRoundRevealBet(undefined)
             setRoundRevealHands([])
+            setShowingPreviousHand(false)
+            setWhoWon(undefined)
+            setHaveILost(undefined)
             // setClientPlayerIndex(undefined)
             
             navigate("/game/")
@@ -211,14 +215,16 @@ function processMessage(parsedMessage, { currentPlayerHand, setCurrentPlayerHand
             console.log("Was told to navigate to location", parsedMessage.Contents)
             navigate(parsedMessage.Contents)
             break
-        // case "Lobby Created":
-        //     let lobbyID = parsedMessage.Contents.LobbyID
-        //     setCurrentLobbyID(lobbyID)
         case "PlayerLeft":
             let playerWhoLeftIndex = parsedMessage.Contents
             console.log(`Player ${playerWhoLeftIndex} left the game`)
-            allCurrentHands.splice(playerWhoLeftIndex, 1)
-            setAllCurrentHands(allCurrentHands)
+            let playerLeftMoveMade = {MoveMade: {MoveType:"LEFT", Value: {FaceVal: 0, NumDice: 0}}, PlayerIndex: playerWhoLeftIndex}
+            setMovesMade([playerLeftMoveMade, ...movesMade])
+            setDisconnectedPlayers([playerWhoLeftIndex, ...disconnectedPlayers])
+            
+            // allCurrentHands.splice(playerWhoLeftIndex, 1) // move away from this
+            // setAllCurrentHands(allCurrentHands)
+            
             break
         default:
             console.log(`Received unknown message:`); // we shouldn't be here

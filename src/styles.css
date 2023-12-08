@@ -242,6 +242,9 @@ body {
 .game_area .hand_display .hands .hand, .game_area .hand_display .player_names .hand {
   margin: 0.5em;
 }
+.game_area .hand_display .hands .disconnected .hand, .game_area .hand_display .player_names .disconnected .hand {
+  background-color: grey;
+}
 .game_area .hand_display .hands p, .game_area .hand_display .player_names p {
   font-size: 1.5em;
 }
@@ -252,6 +255,9 @@ body {
   font-weight: 600;
   font-size: 1.7em;
   text-shadow: 1px 1px 5px rgb(255, 241, 160);
+}
+.game_area .hand_display .hands p.disconnected, .game_area .hand_display .player_names p.disconnected {
+  text-decoration: line-through;
 }
 
 .my_actions {
