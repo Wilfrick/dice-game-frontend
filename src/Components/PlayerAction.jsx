@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import Bet from './Bet'
 import Dudo from './Dudo'
 import Calza from './Calza'
+import PlayerLeft from './PlayerLeft'
 import { numberToString } from '../Utils/numberParser'
 
 const PlayerAction = ({
@@ -16,6 +17,8 @@ const PlayerAction = ({
             return <Dudo player_identifier={PlayerIndex.toString()} showingPreviousHand={showingPreviousHand} setShowingPreviousHand = {setShowingPreviousHand} />
         case "Calza":
             return <Calza player_identifier={PlayerIndex.toString()} showingPreviousHand={showingPreviousHand} setShowingPreviousHand={setShowingPreviousHand} />
+        case "LEFT":
+            return <PlayerLeft player_identifier={PlayerIndex.toString()}/>
 
     }
 }

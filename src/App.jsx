@@ -38,6 +38,7 @@ function App() {
   const [isPalacifoRound, setIsPalacifoRound] = useState(false) // could be undefined, but false is alright
   const [haveILost, setHaveILost] = useState(undefined)
   const [whoWon, setWhoWon] = useState(undefined)
+  const [disconnectedPlayers, setDisconnectedPlayers] = useState([])
   const navigate = useNavigate()
   
 
@@ -57,7 +58,8 @@ function App() {
     isPalacifoRound, setIsPalacifoRound,
     haveILost, setHaveILost,
     whoWon, setWhoWon,
-    navigate
+    navigate,
+    disconnectedPlayers, setDisconnectedPlayers
   }
   // useEffect(() => { makeConnection(wsStateDictionary) }, [])
   
@@ -81,6 +83,7 @@ function App() {
     showingPreviousHand, setShowingPreviousHand,
     isPalacifoRound,
     haveILost, whoWon,
+    disconnectedPlayers,
   }
 
   // console.log(`The current value of selectedIndex is ${selectedIndex}`);
