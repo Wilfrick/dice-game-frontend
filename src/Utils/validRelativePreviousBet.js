@@ -5,7 +5,7 @@ export default function validRelativePreviousBet(betNumDice, betFaceValSTR, prev
     if (betNumDice < 1) {
         return false
     }
-    if ((!prevMove || prevMove.MoveType != "Bet")){
+    if ((!prevMove || ! (prevMove.MoveType in {"Bet":0,"LEFT":0}))){
         return betFaceVal != 1 || isPalacifoRound   
     }
 
